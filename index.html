@@ -103,9 +103,11 @@ h1, h2, h3, .display {
 /* 구 라벨(툴팁) */
 .district-label {
   background: transparent; border: none; box-shadow: none;
-  color: var(--ink); font-family: "Jua", sans-serif;
-  font-size: 11px; padding: 0; white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(250,240,223,.9), 0 0 2px rgba(250,240,223,.9);
+  color: #3A2E1A; font-family: "Jua", sans-serif;
+  font-size: 16px; padding: 0; white-space: nowrap; font-weight: bold;
+  text-shadow:
+    -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff,
+    0 0 6px rgba(255,255,255,.95);
 }
 .district-label::before { display: none; }
 
@@ -1865,7 +1867,7 @@ window.THIEF_IMAGES = {
     },
     {
       id: "m_cheonggyecheon", name: "청계천박물관", category: "박물관", district: "성동구",
-      type: "museum", lat: 37.5710, lng: 127.0500, photoQuery: "청계천박물관",
+      type: "museum", lat: 37.5713, lng: 127.0398, photoQuery: "청계천박물관",
       desc: "서울 도시하천의 역사를 살펴보고, 서울의 경관이 변화된 역사를 알 수 있는 곳입니다.",
       officialLink: "https://museum.seoul.go.kr", officialLinkName: "서울역사박물관(청계천박물관 분관) 공식 누리집",
       quiz: [
@@ -2728,13 +2730,16 @@ window.THIEF_IMAGES = {
 
           layer.on({
             mouseover: function () {
+              if (self._mode === "district" && self._currentDistrict !== name) return; // 진입 중 다른 구 무시
               if (!self._isLocked(name)) layer.setStyle(self.hoverStyle());
               else layer.setStyle({ fillOpacity: 0.15, color: "#7A7F85", weight: 2.5 }); // 빈 구: 약한 강조
             },
             mouseout: function () {
+              if (self._mode === "district" && self._currentDistrict !== name) return;
               self._applyStatusStyle(name); // 구 고유색/진행도 복원
             },
             click: function () {
+              if (self._mode === "district" && self._currentDistrict !== name) return; // 진입 중 다른 구 클릭 차단
               if (typeof self.onDistrictClick === "function") {
                 self.onDistrictClick(name, layer);
               }
