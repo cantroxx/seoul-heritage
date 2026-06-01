@@ -730,6 +730,40 @@ body.district-mode #district-title { display: block; }
   color: var(--ink-soft); margin: 0 16px 14px;
 }
 
+/* 줌 컨트롤(우상단)을 도움말 버튼 아래로 */
+.leaflet-top.leaflet-right { top: 54px; }
+
+/* ===== 구 안 명소(랜드마크) 핀 ===== */
+.lm-pin {
+  position: relative; width: 40px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.3));
+}
+.lm-pin-body {
+  width: 32px; height: 32px; border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg); background: #6B7785; border: 2.5px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.lm-pin-icon { transform: rotate(45deg); font-size: 15px; }
+.lm-pin-label {
+  margin-top: 3px; font-family: "Jua", sans-serif; font-size: 11px;
+  color: #3A2E1A; background: rgba(255,255,255,.9); border-radius: 6px;
+  padding: 1px 6px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,.12);
+}
+.lm-pin:hover .lm-pin-body { background: var(--accent); }
+
+/* 랜드마크 안내 팝업 */
+.modal-head.landmark-head { background: #6B7785; }
+.lm-info-card {
+  display: flex; align-items: center; gap: 16px; padding: 18px;
+}
+.lm-info-icon {
+  flex: 0 0 auto; width: 64px; height: 64px; border-radius: 16px;
+  background: var(--paper-2); display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+}
+.lm-info-desc { flex: 1; font-size: 15px; line-height: 1.7; color: var(--ink); }
+
 </style>
 </head>
 <body>
@@ -1163,6 +1197,81 @@ window.SEOUL_DISTRICTS_GEOJSON = {"type":"FeatureCollection","features":[{"type"
     "강동구": "서울 동남쪽 끝에 있고, 암사동 선사유적과 한강이 있는 곳이에요."
   };
   window.districtDesc = function (name) { return window.DISTRICT_DESC[name] || ""; };
+})();
+
+</script>
+<script>
+/* ===== data/district_landmarks.js ===== */
+/* =========================================================================
+ *  district_landmarks.js  —  구 안 명소(랜드마크) 데이터
+ *  문화유산은 아니지만, 구에 들어가면 함께 보이는 대표 명소.
+ *  회색 깃발 핀으로 표시, 클릭 시 간단 설명(퀴즈/사수 없음).
+ *  전역: window.DISTRICT_LANDMARKS[구이름] = [{name, lat, lng, icon, desc}]
+ * ========================================================================= */
+(function () {
+  "use strict";
+  window.DISTRICT_LANDMARKS = {
+    "종로구": [
+      { name: "광장시장", lat: 37.5701, lng: 126.9997, icon: "🍢", desc: "100년이 넘은 전통시장으로, 빈대떡·마약김밥 같은 먹거리로 유명해요." },
+      { name: "북촌한옥마을", lat: 37.5826, lng: 126.9850, icon: "🏘️", desc: "경복궁과 창덕궁 사이 언덕에 한옥이 모여 있는 마을이에요." },
+      { name: "인사동", lat: 37.5740, lng: 126.9850, icon: "🖼️", desc: "전통 공예품과 그림, 찻집이 모인 거리로 외국 관광객이 많이 찾아요." }
+    ],
+    "중구": [
+      { name: "남산서울타워", lat: 37.5512, lng: 126.9882, icon: "🗼", desc: "남산 꼭대기에 우뚝 선 전망탑으로, 서울 전체를 내려다볼 수 있어요." },
+      { name: "명동", lat: 37.5636, lng: 126.9850, icon: "🛍️", desc: "옷가게와 화장품 가게가 가득한, 서울에서 가장 붐비는 쇼핑 거리예요." },
+      { name: "남대문시장", lat: 37.5594, lng: 126.9776, icon: "🧺", desc: "우리나라에서 가장 크고 오래된 종합 시장 중 하나예요." }
+    ],
+    "용산구": [
+      { name: "남산공원", lat: 37.5503, lng: 126.9920, icon: "🌳", desc: "도심 속 큰 산으로, 산책로와 케이블카가 있어 시민들이 즐겨 찾아요." },
+      { name: "이태원", lat: 37.5345, lng: 126.9945, icon: "🌐", desc: "여러 나라 음식점과 상점이 모인, 다양한 문화가 어우러진 거리예요." }
+    ],
+    "성동구": [
+      { name: "서울숲", lat: 37.5444, lng: 127.0374, icon: "🌳", desc: "한강 가까이에 있는 큰 공원으로, 사슴도 보고 산책도 할 수 있어요." },
+      { name: "성수동 카페거리", lat: 37.5445, lng: 127.0557, icon: "☕", desc: "옛 공장과 창고를 고쳐 만든 개성 있는 카페들이 모인 거리예요." }
+    ],
+    "광진구": [
+      { name: "어린이대공원", lat: 37.5485, lng: 127.0746, icon: "🎡", desc: "동물원·놀이공원·식물원이 함께 있는, 어린이를 위한 큰 공원이에요." },
+      { name: "아차산", lat: 37.5550, lng: 127.1010, icon: "⛰️", desc: "한강이 내려다보이는 산으로, 고구려 유적과 등산로가 있어요." }
+    ],
+    "동대문구": [
+      { name: "경동시장", lat: 37.5800, lng: 127.0380, icon: "🌿", desc: "한약재와 농산물로 유명한 큰 전통시장이에요." }
+    ],
+    "성북구": [
+      { name: "성북동 성곽길", lat: 37.5980, lng: 126.9990, icon: "🧱", desc: "한양도성 성곽을 따라 걷는 길로, 옛 정취가 남아 있어요." }
+    ],
+    "강북구": [
+      { name: "북한산 우이령", lat: 37.6450, lng: 127.0050, icon: "⛰️", desc: "북한산 자락의 등산로로, 도심 가까이에서 산을 즐길 수 있어요." }
+    ],
+    "노원구": [
+      { name: "불암산", lat: 37.6450, lng: 127.0900, icon: "⛰️", desc: "노원구 동쪽에 솟은 산으로, 가벼운 등산을 즐기기 좋아요." }
+    ],
+    "서대문구": [
+      { name: "안산자락길", lat: 37.5760, lng: 126.9450, icon: "🌲", desc: "휠체어도 다닐 수 있는 부드러운 숲길로 유명한 산책로예요." }
+    ],
+    "강서구": [
+      { name: "김포공항", lat: 37.5586, lng: 126.7944, icon: "✈️", desc: "서울의 국내선 중심 공항으로, 비행기가 뜨고 내리는 모습을 볼 수 있어요." },
+      { name: "서울식물원", lat: 37.5694, lng: 126.8350, icon: "🌷", desc: "넓은 온실과 호수가 있는 큰 식물원이에요." }
+    ],
+    "관악구": [
+      { name: "서울대학교", lat: 37.4590, lng: 126.9520, icon: "🎓", desc: "관악산 자락에 자리한 우리나라의 대표 국립대학교예요." },
+      { name: "관악산", lat: 37.4450, lng: 126.9640, icon: "⛰️", desc: "서울 남쪽의 큰 산으로, 등산객이 많이 찾는 명산이에요." }
+    ],
+    "서초구": [
+      { name: "예술의전당", lat: 37.4795, lng: 127.0130, icon: "🎭", desc: "음악·미술·공연을 즐길 수 있는 우리나라 대표 복합 예술 공간이에요." },
+      { name: "반포한강공원", lat: 37.5100, lng: 126.9960, icon: "🌉", desc: "달빛무지개분수로 유명한 한강공원으로, 야경이 멋져요." }
+    ],
+    "강남구": [
+      { name: "코엑스", lat: 37.5126, lng: 127.0589, icon: "🏢", desc: "큰 전시장과 아쿠아리움, 별마당 도서관이 있는 복합 공간이에요." },
+      { name: "봉은사", lat: 37.5150, lng: 127.0573, icon: "🛕", desc: "도심 한가운데 있는 오래된 절로, 고요한 분위기가 인상적이에요." }
+    ],
+    "송파구": [
+      { name: "롯데월드타워", lat: 37.5125, lng: 127.1025, icon: "🗼", desc: "555m 높이의 우리나라에서 가장 높은 건물이에요." },
+      { name: "석촌호수", lat: 37.5090, lng: 127.1020, icon: "🌊", desc: "롯데월드 옆 큰 호수로, 봄이면 벚꽃이 아름다워요." }
+    ],
+    "강동구": [
+      { name: "일자산", lat: 37.5430, lng: 127.1560, icon: "🌲", desc: "강동구를 길게 가로지르는 낮은 산으로, 산책하기 좋아요." }
+    ]
+  };
 })();
 
 </script>
@@ -2642,7 +2751,7 @@ window.THIEF_IMAGES = {
     init: function () {
       var self = this;
       this.map = L.map("map", {
-        zoomControl: true,
+        zoomControl: false,        // 기본 줌(좌상단) 끄고 아래에서 우상단에 추가
         scrollWheelZoom: true,     // 휠 확대/축소
         attributionControl: true,  // 타일 저작권 표기(의무)
         minZoom: 10,
@@ -2650,6 +2759,7 @@ window.THIEF_IMAGES = {
         zoomSnap: 0.25,
         wheelPxPerZoomLevel: 90
       });
+      L.control.zoom({ position: "topright" }).addTo(this.map);
       // 실제 지도 타일 (CARTO Voyager — 파스텔·부드러운 톤)
       L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -3021,6 +3131,7 @@ window.THIEF_IMAGES = {
     document.body.classList.remove("district-mode");
 
     if (SM._markerLayer) { SM.map.removeLayer(SM._markerLayer); SM._markerLayer = null; }
+    if (SM._landmarkLayer) { SM.map.removeLayer(SM._landmarkLayer); SM._landmarkLayer = null; }
 
     // 라벨 복원
     Object.keys(SM._byName).forEach(function (n) {
@@ -3068,6 +3179,33 @@ window.THIEF_IMAGES = {
     SM.map.once("moveend", function () { SM._declutter(items); });
     // 이동이 없던 경우 대비
     setTimeout(function () { if (SM._mode === "district") SM._declutter(items); }, 400);
+
+    // 구 안 명소(랜드마크) 핀 표시
+    SM._renderLandmarks(name);
+  };
+
+  /* 구 명소(랜드마크) 핀 — 문화유산과 구분되는 회색 깃발 핀 */
+  SM._renderLandmarks = function (districtName) {
+    if (SM._landmarkLayer) { SM.map.removeLayer(SM._landmarkLayer); }
+    SM._landmarkLayer = L.layerGroup().addTo(SM.map);
+    var list = (window.DISTRICT_LANDMARKS || {})[districtName] || [];
+    list.forEach(function (lm) {
+      var icon = L.divIcon({
+        className: "",
+        html:
+          '<div class="lm-pin" title="' + lm.name + '">' +
+            '<div class="lm-pin-body"><span class="lm-pin-icon">' + lm.icon + '</span></div>' +
+            '<div class="lm-pin-label">' + lm.name + '</div>' +
+          '</div>',
+        iconSize: [40, 50],
+        iconAnchor: [20, 46]
+      });
+      var m = L.marker([lm.lat, lm.lng], { icon: icon, riseOnHover: true, zIndexOffset: -100 });
+      m.on("click", function () {
+        if (SM.openLandmarkInfo) SM.openLandmarkInfo(lm, districtName);
+      });
+      m.addTo(SM._landmarkLayer);
+    });
   };
 
   /* 겹침 분산: 픽셀 좌표로 밀어내고, 많이 밀린 마커는 원위치 표시 */
@@ -3419,6 +3557,27 @@ window.THIEF_IMAGES = {
         cards +
       '</div>';
 
+    overlay.classList.add("show");
+    document.getElementById("modal-close").onclick = close;
+  };
+
+  /* ---------------- 구 안 명소(랜드마크) 간단 안내 ---------------- */
+  SM.openLandmarkInfo = function (lm, districtName) {
+    ensureDom();
+    modal.innerHTML =
+      '<div class="modal-head landmark-head">' +
+        '<div class="title">' + esc(lm.name) +
+          '<span class="cat">' + esc(districtName) + ' · 우리 동네 명소</span>' +
+        '</div>' +
+        '<button class="close" id="modal-close" aria-label="닫기">×</button>' +
+      '</div>' +
+      '<div class="modal-body">' +
+        '<div class="lm-info-card">' +
+          '<div class="lm-info-icon">' + lm.icon + '</div>' +
+          '<div class="lm-info-desc">' + esc(lm.desc) + '</div>' +
+        '</div>' +
+        '<div class="dl-note">문화유산은 아니지만, ' + esc(districtName) + '에 가면 들러볼 만한 곳이에요!</div>' +
+      '</div>';
     overlay.classList.add("show");
     document.getElementById("modal-close").onclick = close;
   };
