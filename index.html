@@ -2634,7 +2634,7 @@ window.THIEF_IMAGES = {
     },
 
     hoverStyle: function () {
-      return { weight: 3, fillColor: getCSS("--d-hover", "#FFD27D"), fillOpacity: 0.95 };
+      return { weight: 4, fillColor: getCSS("--accent", "#F39C12"), fillOpacity: 0.25 };
     },
 
     init: function () {
@@ -2642,25 +2642,27 @@ window.THIEF_IMAGES = {
       this.map = L.map("map", {
         zoomControl: true,
         scrollWheelZoom: true,     // 휠 확대/축소
-        attributionControl: false,
-        minZoom: 9,
-        maxZoom: 17,
+        attributionControl: true,  // 타일 저작권 표기(의무)
+        minZoom: 10,
+        maxZoom: 18,
         zoomSnap: 0.25,
         wheelPxPerZoomLevel: 90
       });
+      // 실제 지도 타일 (CARTO Voyager — 파스텔·부드러운 톤)
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 19
+      }).addTo(this.map);
+
       // 서울 전체 보기
       this.map.fitBounds(G.SEOUL_BOUNDS);
       this.map.setMaxBounds(expandBounds(G.SEOUL_BOUNDS, 0.15));
 
-      // 한강(라인) — 구 위에 얹어 잘 보이게
-      this._addRiver();
-
-      // 구 경계 로딩
+      // 구 경계 로딩(실제 지도 위에 경계선만 얇게)
       return G.loadDistrictGeoJSON()
         .then(function (geojson) {
           self._addDistricts(geojson);
-          self._addRiverOnTop();   // 강을 구 위로 다시 올림
-          self._addLandmarks();    // 산·랜드마크 아이콘
           return true;
         });
     },
@@ -2727,7 +2729,7 @@ window.THIEF_IMAGES = {
           layer.on({
             mouseover: function () {
               if (!self._isLocked(name)) layer.setStyle(self.hoverStyle());
-              else layer.setStyle({ fillOpacity: 0.6 }); // 빈 구: 약한 강조(클릭 가능 표시)
+              else layer.setStyle({ fillOpacity: 0.15, color: "#7A7F85", weight: 2.5 }); // 빈 구: 약한 강조
             },
             mouseout: function () {
               self._applyStatusStyle(name); // 구 고유색/진행도 복원
@@ -2846,19 +2848,19 @@ window.THIEF_IMAGES = {
     var st = GS.districtStats(name);
     var style;
     var ROUND = { lineJoin: "round", lineCap: "round" };
+    // 실제 지도 위 → 면은 거의 투명, 경계선으로만 구분/진행도 표시
     if (st.status === "empty") {
-      style = { fillColor: css("--paper-2", "#F3E5CE"), fillOpacity: 0.4,
-                dashArray: "2 6", color: "#CDBE9E", weight: 2, opacity: 0.8 };
+      style = { fillColor: "#000000", fillOpacity: 0.0,
+                dashArray: "3 6", color: "#9AA0A6", weight: 1.5, opacity: 0.7 };
     } else if (st.status === "all") {
-      style = { fillColor: baseColor(name), fillOpacity: 0.9,
+      style = { fillColor: css("--gold", "#E8B02E"), fillOpacity: 0.18,
                 dashArray: null, color: css("--gold", "#E8B02E"), weight: 4, opacity: 1 };
     } else if (st.status === "half") {
-      style = { fillColor: baseColor(name), fillOpacity: 0.88,
-                dashArray: null, color: "#7FC0E6", weight: 3.5, opacity: 1 };
+      style = { fillColor: "#5AA9D6", fillOpacity: 0.1,
+                dashArray: null, color: "#3E92CC", weight: 3.5, opacity: 1 };
     } else {
-      // 미사수: 흰색 부드러운 경계선 + 화사한 파스텔 면
-      style = { fillColor: baseColor(name), fillOpacity: 0.78,
-                dashArray: null, color: "#FFFFFF", weight: 2.5, opacity: 0.9 };
+      style = { fillColor: baseColor(name), fillOpacity: 0.12,
+                dashArray: null, color: css("--accent-deep", "#E07A00"), weight: 2.5, opacity: 0.85 };
     }
     for (var k in ROUND) style[k] = ROUND[k];
     layer.setStyle(style);
