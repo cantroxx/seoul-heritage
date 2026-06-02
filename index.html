@@ -893,6 +893,120 @@ body.district-mode #district-title { display: block; }
 .sd-v { font-size: 15px; color: #2E2017; font-weight: bold; }
 .sd-note { margin-top: 6px; font-size: 11px; color: #6B8E6E; }
 
+/* ===== 플레이타임 HUD ===== */
+#playtime-hud {
+  display: flex; align-items: center; gap: 5px; margin-right: 10px;
+  background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.5);
+  color: #fff; border-radius: 999px; padding: 4px 12px;
+  font-family: "Jua", sans-serif; font-size: 13px; white-space: nowrap;
+}
+#playtime-hud .pt-icon { font-size: 13px; }
+#playtime-hud.paused { background: rgba(0,0,0,.28); opacity: .85; }
+#pt-pause { font-size: 12px; }
+
+/* ===== 랭킹전 ===== */
+#ranking-overlay {
+  position: absolute; inset: 0; z-index: 2700; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+  background: rgba(40,30,20,.55);
+}
+#ranking-overlay.show { display: flex; }
+.ranking-card {
+  width: 100%; max-width: 440px; max-height: 86vh; display: flex; flex-direction: column;
+  background: var(--paper, #FBF4E6); border-radius: 22px; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+}
+.ranking-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px 6px;
+}
+.ranking-title { font-family: "Jua", sans-serif; font-size: 22px; color: var(--accent-deep, #E07A00); }
+.ranking-close {
+  background: none; border: none; font-size: 26px; color: #9A8B72; cursor: pointer; line-height: 1;
+}
+.ranking-sub { padding: 0 20px 12px; font-size: 13px; color: var(--ink-soft, #8A7A60); }
+.ranking-body { overflow-y: auto; padding: 0 16px 18px; }
+.rank-loading { text-align: center; color: #9A8B72; padding: 40px 10px; line-height: 1.7; }
+.rank-list { display: flex; flex-direction: column; gap: 8px; }
+.rank-row {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  background: #fff; border-radius: 14px; border: 2px solid transparent;
+}
+.rank-row.me { border-color: var(--accent, #F39C12); background: #FFF7EC; }
+.rank-row.done { background: linear-gradient(100deg, #FFF7E0, #FFFDF6); }
+.rank-no { width: 32px; text-align: center; font-family: "Jua", sans-serif; font-size: 20px; color: #6B5B43; }
+.rank-who { flex: 1; min-width: 0; }
+.rank-nick { font-family: "Jua", sans-serif; font-size: 16px; color: #2E2017; }
+.rank-clear { font-size: 10px; background: var(--gold, #E8B02E); color: #fff; border-radius: 6px; padding: 1px 6px; vertical-align: middle; }
+.rank-school { font-size: 12px; color: #9A8B72; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-stat { text-align: right; }
+.rank-saved { font-family: "Jua", sans-serif; font-size: 17px; color: var(--accent-deep, #E07A00); }
+.rank-saved span { font-size: 11px; color: #9A8B72; margin-left: 2px; }
+.rank-time { font-size: 12px; color: #6B5B43; margin-top: 2px; }
+.rank-myrow {
+  margin-top: 12px; padding: 12px; text-align: center; border-radius: 12px;
+  background: #FFF7EC; border: 2px solid var(--accent, #F39C12);
+  font-family: "Jua", sans-serif; font-size: 14px; color: var(--accent-deep, #E07A00);
+}
+
+/* ===== 문화유산 도감 ===== */
+#codex-btn {
+  position: absolute; right: 16px; bottom: 20px; z-index: 1200;
+  background: var(--accent, #F39C12); color: #fff; border: 3px solid #fff;
+  border-radius: 999px; padding: 12px 20px; cursor: pointer;
+  font-family: "Jua", sans-serif; font-size: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.28); transition: transform .15s;
+}
+#codex-btn:hover { transform: scale(1.05); }
+body.district-mode #codex-btn { display: none; }  /* 구 진입 시 숨김 */
+
+#codex-overlay {
+  position: absolute; inset: 0; z-index: 2700; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+  background: rgba(40,30,20,.55);
+}
+#codex-overlay.show { display: flex; }
+.codex-card {
+  width: 100%; max-width: 480px; max-height: 88vh; display: flex; flex-direction: column;
+  background: var(--paper, #FBF4E6); border-radius: 22px; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+}
+.codex-head {
+  display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 8px;
+}
+.codex-title { font-family: "Jua", sans-serif; font-size: 22px; color: var(--accent-deep, #E07A00); }
+.codex-close { background: none; border: none; font-size: 26px; color: #9A8B72; cursor: pointer; line-height: 1; }
+.codex-progress-wrap { padding: 0 20px 12px; }
+.codex-progress { font-family: "Jua", sans-serif; font-size: 14px; color: var(--ink, #2E2017); margin-bottom: 6px; }
+.codex-bar { height: 10px; background: #E8DCC4; border-radius: 999px; overflow: hidden; }
+.codex-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent, #F39C12), var(--gold, #E8B02E)); transition: width .4s; }
+.codex-body { overflow-y: auto; padding: 4px 16px 18px; }
+.codex-group { margin-bottom: 14px; }
+.codex-cat {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "Jua", sans-serif; font-size: 15px; margin: 6px 4px 8px;
+}
+.codex-cat-count { font-size: 12px; color: #9A8B72; }
+.codex-items { display: flex; flex-direction: column; gap: 6px; }
+.codex-item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 10px 12px; border: none; border-radius: 10px; cursor: pointer; text-align: left;
+  background: #fff; transition: transform .1s, background .1s;
+}
+.codex-item:hover { transform: translateX(2px); }
+.codex-item .ci-icon { font-size: 18px; width: 22px; text-align: center; }
+.codex-item .ci-name { flex: 1; font-size: 15px; }
+.codex-item .ci-dist { font-size: 11px; color: #fff; background: #B5A88F; border-radius: 999px; padding: 2px 9px; }
+.codex-item.saved .ci-name { font-weight: bold; color: #2E2017; }
+.codex-item.saved .ci-dist { background: var(--accent, #F39C12); }
+.codex-item.locked { background: #F0EADC; }
+.codex-item.locked .ci-name { color: #A99B82; }
+.codex-item.locked .ci-icon { opacity: .6; }
+
+/* 도감→핀 강조 */
+.pin-focus { animation: pinBounce .5s ease 3; z-index: 9999 !important; }
+@keyframes pinBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+
 </style>
 </head>
 <body>
@@ -903,7 +1017,13 @@ body.district-mode #district-title { display: block; }
       <div class="subtitle">도굴꾼으로부터 우리 문화재를 지켜라!</div>
     </div>
     <div class="spacer"></div>
+    <div id="playtime-hud" title="플레이 시간 (5분 무활동 시 일시정지)">
+      <span class="pt-icon">⏱️</span>
+      <span id="pt-time">00:00</span>
+      <span id="pt-pause" style="display:none">⏸️</span>
+    </div>
     <button id="reset-btn" title="처음부터 다시" style="background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);color:#fff;border-radius:999px;padding:4px 12px;font-family:'Jua',sans-serif;font-size:12px;cursor:pointer;margin-right:8px">↻ 다시</button>
+    <button id="ranking-btn" title="랭킹전" style="background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);color:#fff;border-radius:999px;padding:4px 12px;font-family:'Jua',sans-serif;font-size:12px;cursor:pointer;margin-right:8px">🏆 랭킹전</button>
     <div class="progress-badge" id="progress-badge">사수 0 / 61</div>
   </header>
 
@@ -994,6 +1114,36 @@ body.district-mode #district-title { display: block; }
   </div>
   <button class="start" id="intro-start">탐험 시작! ▶</button>
   <div class="credit">자료 출처: 국가유산청·국가유산포털 및 각 기관 공식 누리집</div>
+</div>
+
+<!-- 문화유산 도감 버튼(서울 전체 화면 우측 하단) -->
+<button id="codex-btn" title="문화유산 도감">📜 문화유산</button>
+
+<!-- 문화유산 도감 -->
+<div id="codex-overlay">
+  <div class="codex-card">
+    <div class="codex-head">
+      <div class="codex-title">📜 문화유산 도감</div>
+      <button class="codex-close" id="codex-close" aria-label="닫기">×</button>
+    </div>
+    <div class="codex-progress-wrap">
+      <div class="codex-progress" id="codex-progress">61개 중 0개 사수</div>
+      <div class="codex-bar"><div class="codex-bar-fill" id="codex-bar-fill" style="width:0%"></div></div>
+    </div>
+    <div id="codex-body" class="codex-body"></div>
+  </div>
+</div>
+
+<!-- 랭킹전 -->
+<div id="ranking-overlay">
+  <div class="ranking-card">
+    <div class="ranking-head">
+      <div class="ranking-title">🏆 랭킹전 TOP 10</div>
+      <button class="ranking-close" id="ranking-close" aria-label="닫기">×</button>
+    </div>
+    <div class="ranking-sub">문화재를 많이, 빠르게 사수한 순서예요</div>
+    <div id="ranking-body" class="ranking-body"></div>
+  </div>
 </div>
 
 <!-- 전체 승리 -->
@@ -2068,6 +2218,145 @@ window.SEOUL_DISTRICTS_GEOJSON = {"type":"FeatureCollection","features":[{"type"
     { name: "한양초등학교", district: "성동구", address: "서울특별시 성동구 살곶이길 208" },
     { name: "홍익대학교사범대학부속초등학교", district: "마포구", address: "서울특별시 마포구 성미산로 51" },
     { name: "화랑초등학교", district: "노원구", address: "서울특별시 노원구 화랑로 621" },
+  ];
+})();
+
+</script>
+<script>
+/* ===== data/quiz_extra.js ===== */
+/* =========================================================================
+ *  quiz_extra.js  —  추가 문제 은행 (기존 quiz에 합쳐짐)
+ *  id별로 문제를 추가하면, 기존 3문제 + 신규 문제 풀에서 매번 3개 랜덤 출제.
+ *  전역: window.QUIZ_EXTRA[id] = [ {q, choices, answer}, ... ]
+ *  ─ 카테고리별로 채워 나감. (현재: 궁궐)
+ * ========================================================================= */
+(function () {
+  "use strict";
+  window.QUIZ_EXTRA = window.QUIZ_EXTRA || {};
+  var Q = window.QUIZ_EXTRA;
+
+  /* ===== 궁궐 ===== */
+  Q["gyeongbokgung"] = [
+    { q: "경복궁은 언제 처음 세워졌나요?", choices: ["1395년", "1623년", "1900년", "1446년"], answer: 0 },
+    { q: "경복궁은 조선시대에 어떤 궁궐이었나요?", choices: ["으뜸이 되는 궁궐", "절", "왕릉", "외국 사신의 집"], answer: 0 },
+    { q: "경복궁의 정문이자 남문의 이름은?", choices: ["광화문", "흥인지문", "숭례문", "돈의문"], answer: 0 },
+    { q: "왕과 신하들이 연회를 베풀거나 외국 사신을 만나던, 연못 가운데 지어진 누각은?", choices: ["경회루", "근정전", "교태전", "후원"], answer: 0 },
+    { q: "경복궁은 임진왜란 때 불탄 뒤 언제 다시 지어졌나요?", choices: ["조선 말", "삼국시대", "고려시대", "신석기시대"], answer: 0 }
+  ];
+
+  Q["changdeokgung"] = [
+    { q: "창덕궁은 언제 지어졌나요?", choices: ["1405년", "1395년", "1623년", "1897년"], answer: 0 },
+    { q: "우리나라를 대표하는 아름다운 궁궐 정원으로, 창덕궁에 있는 곳은?", choices: ["후원", "경회루", "명정전", "중화전"], answer: 0 },
+    { q: "창덕궁이 받은 국제적인 인정으로 알맞은 것은?", choices: ["유네스코 세계유산 등재", "올림픽 개최", "세계에서 가장 높은 건물", "최초의 학교"], answer: 0 },
+    { q: "창덕궁의 정전인 인정전의 이름에 담긴 뜻은?", choices: ["어진 정치를 펼치겠다", "오래 살기를 바람", "전쟁에서 이기기를 바람", "비가 오기를 바람"], answer: 0 },
+    { q: "창덕궁이 자연과 조화를 이룬다고 평가받는 까닭으로 알맞은 것은?", choices: ["주변 자연환경과 잘 어우러져서", "바다 위에 지어져서", "사막에 있어서", "땅속에 지어져서"], answer: 0 }
+  ];
+
+  Q["changgyeonggung"] = [
+    { q: "창경궁은 조선의 어떤 임금이 지었나요?", choices: ["성종", "세종", "태조", "고종"], answer: 0 },
+    { q: "성종은 누구를 위해 창경궁을 지었나요?", choices: ["세 분의 대비(왕의 어머니)", "외국 사신", "신하들", "백성들"], answer: 0 },
+    { q: "창경궁이 일제강점기에 겪은 일로 알맞은 것은?", choices: ["공원으로 만들어져 훼손됨", "바다에 잠김", "새 궁궐로 지어짐", "외국에 팔림"], answer: 0 },
+    { q: "창경궁의 현재 모습에 대한 설명으로 알맞은 것은?", choices: ["예전의 모습으로 복원됨", "아직 공원 상태임", "사라져 없어짐", "박물관이 됨"], answer: 0 },
+    { q: "창경궁에 현재 남아 있는 궁궐 정전 중 가장 오래된 건물은?", choices: ["명정전", "인정전", "근정전", "숭정전"], answer: 0 }
+  ];
+
+  Q["deoksugung"] = [
+    { q: "덕수궁의 처음 이름은 무엇이었나요?", choices: ["경운궁", "경덕궁", "창덕궁", "경복궁"], answer: 0 },
+    { q: "덕수궁이 정식 궁궐이 된 계기로 알맞은 것은?", choices: ["임진왜란으로 다른 궁궐이 불타서", "올림픽 때문에", "새 임금이 태어나서", "외국이 선물해서"], answer: 0 },
+    { q: "덕수궁에서 생활하던 인물은 누구인가요?", choices: ["고종황제와 그 가족", "세종대왕", "이순신", "단군"], answer: 0 },
+    { q: "덕수궁에 담긴 역사로 알맞은 것은?", choices: ["조선 말기와 대한제국의 역사", "신석기시대의 역사", "삼국시대의 역사", "고려 건국의 역사"], answer: 0 },
+    { q: "덕수궁의 특징으로 알맞은 것은?", choices: ["전통 건축물과 서양식 건축물이 조화를 이룸", "모두 돌로만 지어짐", "땅속에 지어짐", "물 위에 떠 있음"], answer: 0 }
+  ];
+
+  Q["gyeonghuigung"] = [
+    { q: "경희궁은 지어질 당시 어떤 이름으로 불렸나요?", choices: ["경덕궁", "경운궁", "창경궁", "경복궁"], answer: 0 },
+    { q: "경희궁은 몇 년에 지어졌나요?", choices: ["1623년", "1395년", "1405년", "1897년"], answer: 0 },
+    { q: "경희궁은 임진왜란 이후 어떤 궁궐과 더불어 주요 궁궐로 사용되었나요?", choices: ["창덕궁", "수원화성", "남한산성", "불국사"], answer: 0 },
+    { q: "경희궁의 정전은 무엇인가요?", choices: ["숭정전", "인정전", "명정전", "근정전"], answer: 0 },
+    { q: "경희궁에 대한 설명으로 알맞은 것은?", choices: ["훗날 지금의 이름으로 바뀌었다", "한 번도 이름이 바뀐 적 없다", "바다 위에 지어졌다", "신라가 지었다"], answer: 0 }
+  ];
+
+  /* ===== 성곽·대문 ===== */
+  Q["hanyangdoseong"] = [
+    { q: "한양도성을 쌓은 인물은 누구인가요?", choices: ["태조 이성계", "세종대왕", "이순신", "장영실"], answer: 0 },
+    { q: "한양도성을 쌓은 까닭으로 알맞은 것은?", choices: ["수도 한양을 방어하기 위해", "농사를 짓기 위해", "물을 가두기 위해", "시장을 열기 위해"], answer: 0 },
+    { q: "한양도성에는 큰 문이 몇 개 있었나요?", choices: ["4개", "1개", "8개", "12개"], answer: 0 },
+    { q: "한양도성의 문에 대한 설명으로 알맞은 것은?", choices: ["큰 문 4개와 작은 문 4개가 있었다", "문이 하나도 없었다", "모두 물속에 있었다", "문이 100개였다"], answer: 0 },
+    { q: "한양도성은 어느 나라의 수도를 지키기 위한 것이었나요?", choices: ["조선", "고구려", "신라", "백제"], answer: 0 }
+  ];
+  Q["sungnyemun"] = [
+    { q: "숭례문은 어느 방향에 있어 무엇이라고도 불렸나요?", choices: ["남쪽 - 남대문", "동쪽 - 동대문", "북쪽 - 북대문", "서쪽 - 서대문"], answer: 0 },
+    { q: "숭례문은 무엇으로 지정되어 있나요?", choices: ["국보", "천연기념물", "사적공원", "박물관"], answer: 0 },
+    { q: "숭례문은 한양도성에서 어떤 역할의 문인가요?", choices: ["정문", "비상구", "창고 문", "쪽문"], answer: 0 },
+    { q: "숭례문은 2008년에 어떤 일을 겪었나요?", choices: ["화재로 훼손되었다", "바다에 잠겼다", "외국에 팔렸다", "땅에 묻혔다"], answer: 0 },
+    { q: "'남대문'은 어떤 문을 가리키는 이름인가요?", choices: ["숭례문", "흥인지문", "숙정문", "돈의문"], answer: 0 }
+  ];
+  Q["heunginjimun"] = [
+    { q: "흥인지문은 한양도성의 어느 방향 문인가요?", choices: ["동대문", "남대문", "북대문", "서대문"], answer: 0 },
+    { q: "흥인지문을 둘러싸 적을 막아 주는 시설의 이름은?", choices: ["옹성", "해자", "성벽화", "다리"], answer: 0 },
+    { q: "흥인지문의 옹성은 어떤 기능을 하나요?", choices: ["적을 공격하고 방어함", "물을 저장함", "곡식을 보관함", "꽃을 심음"], answer: 0 },
+    { q: "'동대문'이라고도 불리는 문은 무엇인가요?", choices: ["흥인지문", "숭례문", "돈의문", "숙정문"], answer: 0 },
+    { q: "흥인지문은 무엇의 일부인가요?", choices: ["한양도성", "수원화성", "남한산성", "북한산성"], answer: 0 }
+  ];
+  Q["sukjeongmun"] = [
+    { q: "숙정문은 한양도성의 어느 방향 문인가요?", choices: ["북대문", "남대문", "동대문", "서대문"], answer: 0 },
+    { q: "숙정문의 특징으로 알맞은 것은?", choices: ["외진 곳에 있어 사람 왕래가 거의 없었다", "가장 붐비는 문이었다", "바다에 있었다", "시장 한가운데 있었다"], answer: 0 },
+    { q: "숙정문은 무엇의 북쪽 문인가요?", choices: ["한양도성", "경복궁", "종묘", "수원화성"], answer: 0 },
+    { q: "사람의 왕래가 거의 없던 한양도성의 문은?", choices: ["숙정문", "숭례문", "흥인지문", "돈의문"], answer: 0 },
+    { q: "숙정문이 한양도성에서 맡은 방향은?", choices: ["북쪽", "남쪽", "동쪽", "서쪽"], answer: 0 }
+  ];
+  Q["donuimun"] = [
+    { q: "돈의문은 한양도성의 어느 방향 문인가요?", choices: ["서대문", "동대문", "남대문", "북대문"], answer: 0 },
+    { q: "돈의문이 현재 남아 있지 않은 까닭은?", choices: ["일제강점기 때 철거되어서", "전쟁 때 불타서", "바다에 잠겨서", "한 번도 지어지지 않아서"], answer: 0 },
+    { q: "돈의문은 현재 어떤 상태인가요?", choices: ["터만 남아 있다", "그대로 남아 있다", "박물관이 되었다", "다시 지어졌다"], answer: 0 },
+    { q: "'서대문'이라고도 불리던 문은 무엇인가요?", choices: ["돈의문", "숭례문", "흥인지문", "숙정문"], answer: 0 },
+    { q: "돈의문이 철거된 시기는 언제인가요?", choices: ["일제강점기", "삼국시대", "고려시대", "신석기시대"], answer: 0 }
+  ];
+
+  /* ===== 왕릉 ===== */
+  Q["seonjeongneung"] = [
+    { q: "선릉에 모셔진 임금과 왕비는 누구인가요?", choices: ["성종과 정현왕후", "태조와 신덕왕후", "세종과 소헌왕후", "태종과 원경왕후"], answer: 0 },
+    { q: "정릉(선정릉)에 모셔진 임금은 누구인가요?", choices: ["중종", "성종", "태조", "경종"], answer: 0 },
+    { q: "선정릉의 위치에 대한 설명으로 알맞은 것은?", choices: ["도심 한가운데 있다", "산꼭대기에만 있다", "바다 위에 있다", "사막에 있다"], answer: 0 },
+    { q: "조선 왕릉은 어떤 국제적 인정을 받았나요?", choices: ["유네스코 세계유산 등재", "올림픽 개최지", "세계 최고층 건물", "최초의 학교"], answer: 0 },
+    { q: "선정릉은 선릉과 무엇이 함께 있는 곳인가요?", choices: ["정릉", "태릉", "헌릉", "의릉"], answer: 0 }
+  ];
+  Q["taegangneung"] = [
+    { q: "태릉에 모셔진 인물은 누구인가요?", choices: ["중종의 비 문정왕후", "태조", "세종", "순조"], answer: 0 },
+    { q: "강릉에 모셔진 임금과 왕비는 누구인가요?", choices: ["명종과 인순왕후", "성종과 정현왕후", "태종과 원경왕후", "경종과 선의왕후"], answer: 0 },
+    { q: "태릉과 강릉은 어떤 종류의 무덤인가요?", choices: ["조선 왕릉", "신라 고분", "고인돌", "절터"], answer: 0 },
+    { q: "문정왕후를 모신 능의 이름은?", choices: ["태릉", "강릉", "선릉", "정릉"], answer: 0 },
+    { q: "태릉과 강릉이 있는 구는 어디인가요?", choices: ["노원구", "강남구", "종로구", "서초구"], answer: 0 }
+  ];
+  Q["heoninneung"] = [
+    { q: "헌릉에 모셔진 임금과 왕비는 누구인가요?", choices: ["태종과 원경왕후", "순조와 순원왕후", "성종과 정현왕후", "중종"], answer: 0 },
+    { q: "인릉에 모셔진 임금은 누구인가요?", choices: ["순조", "태종", "명종", "경종"], answer: 0 },
+    { q: "헌인릉은 어떤 무덤인가요?", choices: ["조선 왕릉", "삼국시대 산성", "신석기 유적", "절"], answer: 0 },
+    { q: "태종과 원경왕후를 모신 능은?", choices: ["헌릉", "인릉", "태릉", "강릉"], answer: 0 },
+    { q: "헌인릉이 있는 구는 어디인가요?", choices: ["서초구", "노원구", "강남구", "성북구"], answer: 0 }
+  ];
+  Q["jeongneung_sd"] = [
+    { q: "정릉(신덕왕후)에 모셔진 인물은 누구인가요?", choices: ["태조의 비 신덕왕후", "세종의 비 소헌왕후", "성종", "중종"], answer: 0 },
+    { q: "신덕왕후는 누구의 왕비였나요?", choices: ["조선을 세운 태조", "세종", "태종", "순조"], answer: 0 },
+    { q: "정릉(신덕왕후)은 어떤 종류의 무덤인가요?", choices: ["조선 왕릉", "신라 고분", "고인돌", "절터"], answer: 0 },
+    { q: "정릉(신덕왕후)이 있는 구는 어디인가요?", choices: ["성북구", "강남구", "노원구", "서초구"], answer: 0 },
+    { q: "조선을 세운 태조의 비를 모신 능은?", choices: ["정릉(신덕왕후)", "의릉", "태릉", "헌릉"], answer: 0 }
+  ];
+  Q["uireung"] = [
+    { q: "의릉에 모셔진 임금은 조선 제몇 대 임금인가요?", choices: ["제20대 경종", "제1대 태조", "제4대 세종", "제3대 태종"], answer: 0 },
+    { q: "의릉에 경종과 함께 모셔진 왕비는 누구인가요?", choices: ["선의왕후", "신덕왕후", "원경왕후", "정현왕후"], answer: 0 },
+    { q: "의릉은 어떤 종류의 무덤인가요?", choices: ["조선 왕릉", "삼국시대 산성", "신석기 유적", "절"], answer: 0 },
+    { q: "경종과 선의왕후를 모신 능은?", choices: ["의릉", "정릉", "태릉", "강릉"], answer: 0 },
+    { q: "의릉이 있는 구는 어디인가요?", choices: ["성북구", "노원구", "강남구", "서초구"], answer: 0 }
+  ];
+
+  /* ===== 종묘 ===== */
+  Q["jongmyo"] = [
+    { q: "종묘는 누구에게 제사를 올리던 곳인가요?", choices: ["조선의 왕과 왕비", "외국 사신", "장군들", "백성들"], answer: 0 },
+    { q: "종묘에 모신 것은 무엇인가요?", choices: ["신주(신위)", "곡식", "무기", "책"], answer: 0 },
+    { q: "종묘는 어떤 국제적 인정을 받았나요?", choices: ["유네스코 세계유산 등재", "올림픽 개최", "세계 최고층", "최초의 시장"], answer: 0 },
+    { q: "종묘에서 지내던 제사 의식을 무엇이라 하나요?", choices: ["종묘제례", "단오제", "한식", "추석놀이"], answer: 0 },
+    { q: "종묘제례 때 함께 연주되는 음악을 무엇이라 하나요?", choices: ["종묘제례악", "아리랑", "판소리", "사물놀이"], answer: 0 }
   ];
 })();
 
@@ -3496,6 +3785,18 @@ window.THIEF_IMAGES = {
       .catch(function (e) { if (cb) cb(String(e)); });
   };
 
+  /* ---------- 전체 유저 불러오기(랭킹용) ---------- */
+  FB.loadAllUsers = function (cb) {
+    if (!FB.ready) { cb(null, FB.error || "DB 미연결"); return; }
+    FB.db.ref("users").once("value")
+      .then(function (snap) {
+        var val = snap.val() || {};
+        var arr = Object.keys(val).map(function (k) { return val[k]; });
+        cb(arr, null);
+      })
+      .catch(function (e) { cb(null, String(e)); });
+  };
+
   /* ---------- 신규 유저 최초 생성 ---------- */
   FB.createUser = function (school, number, nick, cb) {
     var now = Date.now();
@@ -4272,6 +4573,27 @@ window.THIEF_IMAGES = {
     }
   };
 
+  /* 도감에서 호출: 현재 구의 특정 문화재 핀으로 이동 + 강조 + 정보창 */
+  SM.focusItem = function (id) {
+    var items = SM._currentItems || [];
+    var item = null;
+    for (var i = 0; i < items.length; i++) { if (items[i].id === id) { item = items[i]; break; } }
+    if (!item) return;
+    // 지도 중심 이동
+    var ll = item._trueLatLng || [item.lat, item.lng];
+    try { SM.map.panTo(ll, { animate: true }); } catch (e) {}
+    // 핀 강조(잠깐 튕기는 효과)
+    if (item._marker && item._marker.getElement) {
+      var el = item._marker.getElement();
+      if (el) {
+        el.classList.add("pin-focus");
+        setTimeout(function () { el.classList.remove("pin-focus"); }, 1600);
+      }
+    }
+    // 정보창 열기
+    setTimeout(function () { SM._openItem(item); }, 350);
+  };
+
   /* 돌아가기 버튼 */
   var back = document.getElementById("back-btn");
   if (back) back.addEventListener("click", function () { SM.exitDistrict(); });
@@ -4631,16 +4953,43 @@ window.THIEF_IMAGES = {
         '</div>' +
       '</div>';
     document.getElementById("quiz-start").onclick = function () {
-      quizState = { idx: 0, correct: 0, results: [] };
+      quizState = { idx: 0, correct: 0, results: [], quiz: buildQuizSet(fullPool(current)) };
       renderQuestion();
     };
   }
 
+  // 기존 quiz + QUIZ_EXTRA[id] 합친 전체 문제 풀
+  function fullPool(item) {
+    var base = (item.quiz || []).slice();
+    var extra = (window.QUIZ_EXTRA && window.QUIZ_EXTRA[item.id]) || [];
+    return base.concat(extra);
+  }
+
+  // 배열 셔플(Fisher-Yates)
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  // 이번 회차 문제 세트: 문제 풀에서 최대 3개 랜덤 추출 + 각 문제의 선택지 순서 셔플
+  function buildQuizSet(pool) {
+    var picked = shuffle(pool).slice(0, Math.min(3, pool.length));
+    return picked.map(function (q) {
+      var correctText = q.choices[q.answer];
+      var shuffled = shuffle(q.choices);
+      return { q: q.q, choices: shuffled, answer: shuffled.indexOf(correctText) };
+    });
+  }
+
   function renderQuestion() {
     var body = modal.querySelector(".modal-body");
-    var q = current.quiz[quizState.idx];
+    var q = quizState.quiz[quizState.idx];
     var dots = "";
-    for (var i = 0; i < current.quiz.length; i++) {
+    for (var i = 0; i < quizState.quiz.length; i++) {
       var cls = "dot";
       if (quizState.results[i] === true) cls += " ok";
       else if (quizState.results[i] === false) cls += " no";
@@ -4656,7 +5005,7 @@ window.THIEF_IMAGES = {
           '<img class="thief-mini" src="' + thiefImg("thief_angry") + '" alt="도굴꾼" />' +
           '<div class="thief-q-bubble">' +
             '<div class="dots">' + dots + '</div>' +
-            '<div class="qnum">도굴꾼의 문제 ' + (quizState.idx + 1) + ' / ' + current.quiz.length + '</div>' +
+            '<div class="qnum">도굴꾼의 문제 ' + (quizState.idx + 1) + ' / ' + quizState.quiz.length + '</div>' +
             '<div class="qtext">' + esc(q.q) + '</div>' +
           '</div>' +
         '</div>' +
@@ -4671,7 +5020,7 @@ window.THIEF_IMAGES = {
 
   function answer(choiceIdx) {
     var body = modal.querySelector(".modal-body");
-    var q = current.quiz[quizState.idx];
+    var q = quizState.quiz[quizState.idx];
     var correct = q.answer;
     var ok = choiceIdx === correct;
     quizState.results[quizState.idx] = ok;
@@ -4689,7 +5038,7 @@ window.THIEF_IMAGES = {
 
     setTimeout(function () {
       quizState.idx++;
-      if (quizState.idx < current.quiz.length) renderQuestion();
+      if (quizState.idx < quizState.quiz.length) renderQuestion();
       else finishQuiz();
     }, 1150);
   }
@@ -5136,6 +5485,386 @@ window.THIEF_IMAGES = {
     var dir = window.KakaoGeo.bearing(SP.latlng.lat, SP.latlng.lng, lat, lng);
     return { km: km, kmText: est.kmText, walkMin: est.walkMin, carMin: est.carMin, dir: dir };
   };
+})();
+
+</script>
+<script>
+/* ===== js/playtime.js ===== */
+/* =========================================================================
+ *  playtime.js  —  플레이타임 타이머 + 5분 무활동 일시정지 + Firebase 저장
+ *  - 로그인 후 시작. 활동(클릭/문제풀이)마다 갱신.
+ *  - 5분(IDLE_MS) 무활동 → 일시정지(타이머 멈춤 + 아이콘 표시), 활동 시 재개.
+ *  - 사수할 때마다, 주기적으로 Firebase에 누적 저장.
+ *  의존: window.GameState, window.FB, window.CURRENT_USER
+ *  전역: window.PlayTime = { totalMs(), start(), addActivity(), paused }
+ * ========================================================================= */
+(function () {
+  "use strict";
+
+  var IDLE_MS = 5 * 60 * 1000;   // 5분
+  var TICK_MS = 1000;            // 1초마다 갱신
+  var SAVE_EVERY_MS = 20 * 1000; // 20초마다 Firebase 저장(과한 호출 방지)
+
+  var PT = {
+    baseMs: 0,           // 이전 세션까지 누적(로그인 시 불러옴)
+    sessionMs: 0,        // 이번 세션 활동 시간
+    paused: true,        // 시작 전엔 멈춤
+    lastActivity: 0,     // 마지막 활동 시각
+    lastTick: 0,
+    started: false,
+    lastSaveMs: 0,
+    finishedMs: null     // 61개 완료까지 걸린 누적 ms
+  };
+  window.PlayTime = PT;
+
+  PT.totalMs = function () { return PT.baseMs + PT.sessionMs; };
+
+  /* 로그인 완료 시 이전 기록 불러와 시작 */
+  function startFromUser(user) {
+    if (user && user.record) {
+      PT.baseMs = user.record.playMs || 0;
+      PT.finishedMs = (typeof user.record.finishedMs === "number") ? user.record.finishedMs : null;
+    }
+    PT.start();
+  }
+
+  PT.start = function () {
+    if (PT.started) return;
+    PT.started = true;
+    PT.paused = false;
+    PT.lastActivity = Date.now();
+    PT.lastTick = Date.now();
+    loop();
+    bindActivity();
+    renderHud();
+  };
+
+  function loop() {
+    setInterval(function () {
+      var now = Date.now();
+      if (!PT.paused) {
+        // 무활동 검사
+        if (now - PT.lastActivity >= IDLE_MS) {
+          PT.paused = true;
+          renderHud();
+        } else {
+          PT.sessionMs += (now - PT.lastTick);
+        }
+      }
+      PT.lastTick = now;
+      renderHud();
+    }, TICK_MS);
+  }
+
+  /* 활동 발생: 타이머 재개 + 시각 갱신 */
+  PT.addActivity = function () {
+    var now = Date.now();
+    if (PT.paused && PT.started) {
+      PT.paused = false;
+      PT.lastTick = now;     // 멈춰있던 동안은 시간 안 셈
+      renderHud();
+    }
+    PT.lastActivity = now;
+  };
+
+  function bindActivity() {
+    // 지도/문서 클릭, 키 입력을 활동으로 간주
+    ["click", "keydown", "touchstart"].forEach(function (ev) {
+      document.addEventListener(ev, function () { PT.addActivity(); }, true);
+    });
+  }
+
+  /* ---------- HUD(상단 타이머) ---------- */
+  function fmt(ms) {
+    var s = Math.floor(ms / 1000);
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    function p(n) { return (n < 10 ? "0" : "") + n; }
+    return (h > 0 ? h + ":" : "") + p(m) + ":" + p(sec);
+  }
+  function renderHud() {
+    var el = document.getElementById("playtime-hud");
+    if (!el) return;
+    var timeEl = document.getElementById("pt-time");
+    var pauseEl = document.getElementById("pt-pause");
+    if (timeEl) timeEl.textContent = fmt(PT.totalMs());
+    if (pauseEl) pauseEl.style.display = PT.paused ? "inline" : "none";
+    el.classList.toggle("paused", PT.paused);
+  }
+
+  /* ---------- Firebase 저장 ---------- */
+  function saveToFB(force) {
+    var u = window.CURRENT_USER;
+    if (!u || !window.FB || !window.FB.ready) return;
+    var now = Date.now();
+    if (!force && now - PT.lastSaveMs < SAVE_EVERY_MS) return;
+    PT.lastSaveMs = now;
+
+    var GS = window.GameState;
+    var savedList = GS.savedList ? GS.savedList() : [];
+    var savedObj = {};
+    savedList.forEach(function (id) { savedObj[id] = true; });
+
+    var data = {
+      playMs: PT.totalMs(),
+      savedCount: savedList.length,
+      saved: savedObj,
+      lastSeen: now
+    };
+    // 61개 전부 사수 완료 시점 기록(최초 1회)
+    var t = GS.totals();
+    if (t.saved >= t.total && t.total > 0 && PT.finishedMs == null) {
+      PT.finishedMs = PT.totalMs();
+      data.finishedMs = PT.finishedMs;
+    }
+    window.FB.saveUser(u.school, u.number, u.nick, data);
+  }
+  PT.save = saveToFB;
+
+  // 사수 등 상태 변화 시 활동+저장
+  if (window.GameState && window.GameState.onChange) {
+    window.GameState.onChange(function () {
+      PT.addActivity();
+      saveToFB(true);  // 사수 순간은 즉시 저장
+    });
+  }
+  // 주기 저장
+  setInterval(function () { saveToFB(false); }, SAVE_EVERY_MS);
+  // 페이지 떠날 때 마지막 저장
+  window.addEventListener("beforeunload", function () { saveToFB(true); });
+
+  // 로그인 완료에 연결(school_pin의 onLoginDone과 공존하도록 체이닝)
+  var prevHandler = window.onLoginDone;
+  window.onLoginDone = function (user) {
+    if (typeof prevHandler === "function") prevHandler(user);
+    startFromUser(user);
+  };
+})();
+
+</script>
+<script>
+/* ===== js/ranking.js ===== */
+/* =========================================================================
+ *  ranking.js  —  랭킹전 (1~10등)
+ *  정렬: ① 사수 개수 많은 순  ② 같으면 완료자(finishedMs 있는 사람) 우선
+ *        ③ 완료자끼리는 완료시간 짧은 순  ④ 그 외 플레이타임 짧은 순
+ *  의존: window.FB, window.CURRENT_USER
+ * ========================================================================= */
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+
+  function fmtMs(ms) {
+    if (ms == null) return "-";
+    var s = Math.floor(ms / 1000);
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    function p(n) { return (n < 10 ? "0" : "") + n; }
+    return (h > 0 ? h + ":" : "") + p(m) + ":" + p(sec);
+  }
+
+  function rankSort(a, b) {
+    var sa = a.savedCount || 0, sb = b.savedCount || 0;
+    if (sb !== sa) return sb - sa;                  // 사수 많은 순
+    var fa = (typeof a.finishedMs === "number"), fb = (typeof b.finishedMs === "number");
+    if (fa && fb) return a.finishedMs - b.finishedMs; // 완료시간 짧은 순
+    if (fa !== fb) return fa ? -1 : 1;               // 완료자 우선
+    return (a.playMs || 0) - (b.playMs || 0);        // 플레이타임 짧은 순
+  }
+
+  function open() {
+    var overlay = $("ranking-overlay");
+    overlay.classList.add("show");
+    var body = $("ranking-body");
+    body.innerHTML = '<div class="rank-loading">랭킹을 불러오는 중...</div>';
+
+    if (!window.FB || !window.FB.ready) {
+      body.innerHTML = '<div class="rank-loading">온라인 랭킹에 연결하지 못했어요.<br>인터넷 연결을 확인해 주세요.</div>';
+      return;
+    }
+
+    window.FB.loadAllUsers(function (users, err) {
+      if (err || !users) {
+        body.innerHTML = '<div class="rank-loading">랭킹을 불러오지 못했어요: ' + (err || "") + '</div>';
+        return;
+      }
+      users.sort(rankSort);
+      var top = users.slice(0, 10);
+      var me = window.CURRENT_USER;
+      var myKey = me ? (me.school + "__" + me.number + "__" + me.nick) : null;
+
+      var rows = top.map(function (u, i) {
+        var rank = i + 1;
+        var medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : rank;
+        var done = (typeof u.finishedMs === "number");
+        var isMe = me && u.school === me.school && String(u.number) === String(me.number) && u.nick === me.nick;
+        return '<div class="rank-row' + (isMe ? " me" : "") + (done ? " done" : "") + '">' +
+          '<div class="rank-no">' + medal + '</div>' +
+          '<div class="rank-who">' +
+            '<div class="rank-nick">' + esc(u.nick || "?") + (done ? ' <span class="rank-clear">CLEAR</span>' : '') + '</div>' +
+            '<div class="rank-school">' + esc(u.school || "") + ' · ' + (u.number || "?") + '번</div>' +
+          '</div>' +
+          '<div class="rank-stat">' +
+            '<div class="rank-saved">' + (u.savedCount || 0) + '<span>개 사수</span></div>' +
+            '<div class="rank-time">' + (done ? "완료 " + fmtMs(u.finishedMs) : "⏱️ " + fmtMs(u.playMs || 0)) + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+
+      if (!rows) rows = '<div class="rank-loading">아직 기록이 없어요. 첫 번째 사수자가 되어 보세요!</div>';
+
+      // 내 순위(10위 밖이면 따로 표시)
+      var myRankInfo = "";
+      if (me) {
+        var idx = users.findIndex(function (u) {
+          return u.school === me.school && String(u.number) === String(me.number) && u.nick === me.nick;
+        });
+        if (idx >= 10) {
+          var u = users[idx];
+          myRankInfo = '<div class="rank-myrow">내 순위 ' + (idx + 1) + '위 · ' +
+            (u.savedCount || 0) + '개 사수 · ⏱️ ' + fmtMs(u.playMs || 0) + '</div>';
+        }
+      }
+
+      body.innerHTML = '<div class="rank-list">' + rows + '</div>' + myRankInfo;
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function init() {
+    var btn = $("ranking-btn");
+    if (btn) btn.onclick = open;
+    var close = $("ranking-close");
+    if (close) close.onclick = function () { $("ranking-overlay").classList.remove("show"); };
+    var overlay = $("ranking-overlay");
+    if (overlay) overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) overlay.classList.remove("show");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  if (document.readyState !== "loading") init();
+})();
+
+</script>
+<script>
+/* ===== js/codex.js ===== */
+/* =========================================================================
+ *  codex.js  —  문화유산 도감 (서울 전체 화면 우측 하단 버튼)
+ *  61개 목록: 사수=컬러+볼드+아이콘 / 미사수=회색. 카테고리별 묶음.
+ *  항목 클릭 → 그 문화재가 있는 구로 이동(드릴다운) + 핀 강조.
+ *  의존: window.HERITAGE_DATA, window.GameState, window.SeoulMap, window.categoryStyle
+ * ========================================================================= */
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+  var GS = window.GameState, SM = window.SeoulMap;
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // 카테고리 표시 순서
+  var CAT_ORDER = ["궁궐","성곽·대문","왕릉","종묘","기록유산","무형유산","자연유산","시대별 문화유산","유적지","독립운동 유적지","박물관","기념관"];
+
+  function open() {
+    var overlay = $("codex-overlay");
+    overlay.classList.add("show");
+    render();
+  }
+  function closeCodex() { $("codex-overlay").classList.remove("show"); }
+
+  function render() {
+    var DATA = window.HERITAGE_DATA || [];
+    var body = $("codex-body");
+
+    var total = DATA.length;
+    var savedN = DATA.filter(function (d) { return GS.isSaved(d.id); }).length;
+    $("codex-progress").textContent = total + "개 중 " + savedN + "개 사수";
+    var pct = total ? Math.round(savedN / total * 100) : 0;
+    $("codex-bar-fill").style.width = pct + "%";
+
+    // 카테고리별 그룹
+    var groups = {};
+    DATA.forEach(function (d) {
+      (groups[d.category] = groups[d.category] || []).push(d);
+    });
+    var cats = Object.keys(groups).sort(function (a, b) {
+      var ia = CAT_ORDER.indexOf(a), ib = CAT_ORDER.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+
+    var html = "";
+    cats.forEach(function (cat) {
+      var cs = window.categoryStyle ? window.categoryStyle(cat) : { color: "#9A9A9A", icon: "📍" };
+      var items = groups[cat];
+      var savedC = items.filter(function (d) { return GS.isSaved(d.id); }).length;
+      html += '<div class="codex-group">' +
+        '<div class="codex-cat" style="color:' + cs.color + '">' +
+          '<span>' + cs.icon + ' ' + esc(cat) + '</span>' +
+          '<span class="codex-cat-count">' + savedC + '/' + items.length + '</span>' +
+        '</div>' +
+        '<div class="codex-items">';
+      items.forEach(function (d) {
+        var saved = GS.isSaved(d.id);
+        html += '<button class="codex-item ' + (saved ? "saved" : "locked") + '" data-id="' + d.id + '" data-dist="' + esc(d.district) + '">' +
+          '<span class="ci-icon">' + (saved ? cs.icon : "🔒") + '</span>' +
+          '<span class="ci-name">' + esc(d.name) + '</span>' +
+          '<span class="ci-dist">' + esc(d.district) + '</span>' +
+        '</button>';
+      });
+      html += '</div></div>';
+    });
+    body.innerHTML = html;
+
+    Array.prototype.forEach.call(body.querySelectorAll(".codex-item"), function (btn) {
+      btn.onclick = function () {
+        var id = btn.getAttribute("data-id");
+        var dist = btn.getAttribute("data-dist");
+        goToItem(id, dist);
+      };
+    });
+  }
+
+  // 도감 항목 클릭 → 그 구로 이동 + 핀 강조
+  function goToItem(id, district) {
+    closeCodex();
+    if (!SM) return;
+    // 이미 다른 구에 있으면 먼저 나가기
+    if (SM._mode === "district" && SM._currentDistrict !== district && SM.exitDistrict) {
+      SM.exitDistrict();
+    }
+    setTimeout(function () {
+      if (SM._mode !== "district") {
+        if (SM.enterDistrict) SM.enterDistrict(district);
+      }
+      // 진입 애니메이션 후 해당 핀 열기/강조
+      setTimeout(function () {
+        if (SM.focusItem) SM.focusItem(id);
+      }, 700);
+    }, SM._mode === "district" ? 350 : 0);
+  }
+
+  function init() {
+    var btn = $("codex-btn");
+    if (btn) btn.onclick = open;
+    var close = $("codex-close");
+    if (close) close.onclick = closeCodex;
+    var overlay = $("codex-overlay");
+    if (overlay) overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) closeCodex();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  if (document.readyState !== "loading") init();
 })();
 
 </script>
