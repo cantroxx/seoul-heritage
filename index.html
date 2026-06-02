@@ -868,16 +868,23 @@ body.district-mode #district-title { display: block; }
   50% { box-shadow: 0 0 0 8px rgba(46,125,50,0); }
 }
 
-/* ===== 우리 학교 거리 버튼·패널 ===== */
+/* ===== 관련 사이트 + 우리 학교 버튼 한 줄 ===== */
+.action-row {
+  display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; margin-top: 4px;
+}
+.action-row .modal-link {
+  flex: 1; min-width: 130px; margin: 0;
+  display: flex; align-items: center; justify-content: center;
+}
 .school-dist-btn {
-  position: absolute; top: 12px; right: 52px; z-index: 5;
-  background: #2E7D32; color: #fff; border: none; border-radius: 999px;
-  padding: 7px 14px; font-family: "Jua", sans-serif; font-size: 13px; cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  flex: 1; min-width: 130px;
+  background: #2E7D32; color: #fff; border: none; border-radius: 12px;
+  padding: 12px 14px; font-family: "Jua", sans-serif; font-size: 14px; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 .school-dist-btn.active { background: #1B5E20; }
 .school-dist-panel {
-  display: none; margin: 0 0 14px; padding: 14px 16px;
+  display: none; margin: 10px 0 0; padding: 14px 16px;
   background: #EAF5EB; border: 1.5px solid #2E7D32; border-radius: 14px;
 }
 .school-dist-panel.show { display: block; }
@@ -4449,8 +4456,6 @@ window.THIEF_IMAGES = {
     // 우리 학교 거리 정보
     var schoolInfo = (window.SchoolPin && item.lat && item.lng)
       ? window.SchoolPin.infoTo(item.lat, item.lng) : null;
-    var schoolBtn = schoolInfo
-      ? '<button class="school-dist-btn" id="school-dist-btn">🏫 우리 학교에서는</button>' : "";
     var schoolPanel = schoolInfo
       ? '<div class="school-dist-panel" id="school-dist-panel">' +
           '<div class="sd-row"><span class="sd-k">거리</span><span class="sd-v">약 ' + schoolInfo.kmText + ' · ' + schoolInfo.dir + '쪽</span></div>' +
@@ -4467,19 +4472,22 @@ window.THIEF_IMAGES = {
         '<div class="title">' + esc(item.name) +
           '<span class="cat">' + esc(item.category) + ' · ' + esc(item.district) + '</span>' +
         '</div>' +
-        schoolBtn +
         '<button class="close" id="modal-close" aria-label="닫기">×</button>' +
       '</div>' +
       '<div class="modal-body">' +
-        schoolPanel +
         photoHtml(item) +
         '<div class="saved-badge ' + (saved ? "show" : "") + '" id="saved-badge">🏅 이 문화재는 도굴꾼으로부터 안전하게 지켜졌어요!</div>' +
         '<div class="modal-desc">' + esc(item.descLong || item.desc) + '</div>' +
         holderLine +
-        (item.officialLink
-          ? '<a class="modal-link" href="' + esc(item.officialLink) + '" target="_blank" rel="noopener noreferrer">🔗 ' +
-              esc(item.officialLinkName || "공식 자료 보기") + '</a>'
-          : "") +
+        '<div class="action-row">' +
+          (item.officialLink
+            ? '<a class="modal-link" href="' + esc(item.officialLink) + '" target="_blank" rel="noopener noreferrer">🔗 관련 사이트</a>'
+            : "") +
+          (schoolInfo
+            ? '<button class="school-dist-btn" id="school-dist-btn">🏫 우리 학교에서는</button>'
+            : "") +
+        '</div>' +
+        schoolPanel +
         '<div class="quiz" id="quiz"></div>' +
         '<div class="quiz-result" id="quiz-result"></div>' +
       '</div>';
@@ -4745,8 +4753,7 @@ window.THIEF_IMAGES = {
         photoHtml(info) +
         '<div class="modal-desc">' + esc(info.desc) + '</div>' +
         (info.officialLink
-          ? '<a class="modal-link" href="' + esc(info.officialLink) + '" target="_blank" rel="noopener noreferrer">🔗 ' +
-              esc(info.officialLinkName || "공식 자료 보기") + '</a>'
+          ? '<a class="modal-link" href="' + esc(info.officialLink) + '" target="_blank" rel="noopener noreferrer">🔗 관련 사이트</a>'
           : "") +
       '</div>';
     overlay.classList.add("show");
