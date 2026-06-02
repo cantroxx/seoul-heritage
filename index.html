@@ -1077,6 +1077,31 @@ body.district-mode #codex-btn { display: none; }  /* 구 진입 시 숨김 */
 .admin-msg.ok { color: #2E7D32; }
 .admin-msg.warn { color: #B5302E; }
 
+/* 모드 화면 돌아가기 버튼 */
+.mode-back {
+  position: absolute; top: 20px; left: 20px;
+  background: rgba(255,255,255,.15); color: #fff; border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 999px; padding: 8px 16px; font-family: "Jua", sans-serif; font-size: 13px; cursor: pointer;
+}
+.mode-back:hover { background: rgba(255,255,255,.25); }
+.mode-back.hidden { display: none; }
+
+/* 난이도 선택 */
+.diff-section { margin-top: 18px; }
+.diff-label { font-family: "Jua", sans-serif; font-size: 14px; color: #F3E9D8; margin-bottom: 8px; }
+.diff-options { display: flex; gap: 10px; }
+.diff-opt {
+  flex: 1; background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.25);
+  border-radius: 12px; padding: 12px 10px; cursor: pointer; color: #fff;
+  display: flex; flex-direction: column; gap: 3px; transition: all .15s;
+}
+.diff-opt:hover { background: rgba(255,255,255,.18); }
+.diff-opt.active { background: #fff; border-color: var(--accent); }
+.diff-opt-title { font-family: "Jua", sans-serif; font-size: 15px; }
+.diff-opt-desc { font-size: 11px; opacity: .85; }
+.diff-opt.active .diff-opt-title { color: var(--accent-deep, #E07A00); }
+.diff-opt.active .diff-opt-desc { color: #8A7A60; }
+
 </style>
 </head>
 <body>
@@ -1145,6 +1170,7 @@ body.district-mode #codex-btn { display: none; }  /* 구 진입 시 숨김 */
 
 <!-- 모드 선택 (학습 / 랭킹전) -->
 <div id="mode-overlay" class="hidden">
+  <button id="mode-back" class="mode-back hidden">◀ 게임으로 돌아가기</button>
   <div class="mode-card">
     <div class="badge-emoji">🏯</div>
     <h1 id="mode-greeting">반가워요!</h1>
@@ -1161,7 +1187,20 @@ body.district-mode #codex-btn { display: none; }  /* 구 진입 시 숨김 */
         <div class="mode-opt-desc">시간을 재서 빠르게!<br>전국 친구들과 순위 대결</div>
       </button>
     </div>
-    <div class="mode-note">랭킹은 매주 월요일에 초기화돼요. 기록은 두 모드 모두 저장돼요.</div>
+    <div class="diff-section">
+      <div class="diff-label">난이도</div>
+      <div class="diff-options">
+        <button class="diff-opt active" id="diff-normal" data-diff="normal">
+          <span class="diff-opt-title">📖 일반</span>
+          <span class="diff-opt-desc">초등 교과서 수준</span>
+        </button>
+        <button class="diff-opt" id="diff-deep" data-diff="deep">
+          <span class="diff-opt-title">🔥 심층</span>
+          <span class="diff-opt-desc">중·고 수준 · 더 많고 어려운 문제</span>
+        </button>
+      </div>
+    </div>
+    <div class="mode-note">랭킹은 매주 월요일에 초기화돼요. 기록은 두 모드 모두 저장돼요.<br>심층은 5문제 중 4개(궁궐은 10중 8개)를 맞혀야 사수할 수 있어요.</div>
   </div>
 </div>
 
@@ -2825,6 +2864,102 @@ window.SEOUL_DISTRICTS_GEOJSON = {"type":"FeatureCollection","features":[{"type"
     { q: "3·1 운동은 무엇을 위한 운동이었나요?", choices: ["나라의 독립", "전쟁 승리", "농사 개혁", "시장 확대"], answer: 0 },
     { q: "탑골공원은 어느 구에 있나요?", choices: ["종로구", "서대문구", "중구", "용산구"], answer: 0 },
     { q: "3·1 운동이 일어난 해는?", choices: ["1919년", "1897년", "1945년", "1950년"], answer: 0 }
+  ];
+})();
+
+</script>
+<script>
+/* ===== data/quiz_deep.js ===== */
+/* =========================================================================
+ *  quiz_deep.js  —  심층(중·고 수준) 문제 은행
+ *  난이도 '심층' 선택 시 이 풀에서 출제(5문제/4개↑, 궁궐 10문제/8개↑).
+ *  window.QUIZ_DEEP[id] = [...]            (본문/유물 심층 문제)
+ *  window.QUIZ_DEEP_BUILDINGS[id] = [...]  (궁궐 시설 심층 문제)
+ *  ※ 카테고리별로 채워 나감. (현재: 궁궐)
+ * ========================================================================= */
+(function () {
+  "use strict";
+  window.QUIZ_DEEP = window.QUIZ_DEEP || {};
+  window.QUIZ_DEEP_BUILDINGS = window.QUIZ_DEEP_BUILDINGS || {};
+  var D = window.QUIZ_DEEP;
+  var B = window.QUIZ_DEEP_BUILDINGS;
+
+  /* ===== 궁궐 (심층) ===== */
+  D["gyeongbokgung"] = [
+    { q: "경복궁의 이름 '景福'은 어떤 문헌에서 따온 것인가요?", choices: ["《시경(詩經)》", "《논어》", "《삼국사기》", "《경국대전》"], answer: 0 },
+    { q: "경복궁의 전각 배치에서 정전·편전·침전이 남북으로 이어지는 축의 원리는?", choices: ["전조후침(前朝後寢)", "좌묘우사(左廟右社)", "배산임수", "삼문삼조"], answer: 0 },
+    { q: "경복궁을 처음 설계·조성하는 데 주도적 역할을 한 조선 개국공신은?", choices: ["정도전", "정몽주", "이방원", "최영"], answer: 0 },
+    { q: "임진왜란(1592)으로 소실된 경복궁이 중건된 것은 누구의 주도였나요?", choices: ["흥선대원군", "정조", "영조", "고종 직접"], answer: 0 },
+    { q: "경복궁 중건(1865~1868) 재정 마련을 위해 발행되어 물가 혼란을 부른 화폐는?", choices: ["당백전", "상평통보", "건원중보", "백동화"], answer: 0 },
+    { q: "'좌묘우사' 원칙에 따라 경복궁을 기준으로 종묘와 사직단이 놓인 방향은?", choices: ["종묘 동쪽·사직 서쪽", "종묘 서쪽·사직 동쪽", "둘 다 남쪽", "둘 다 북쪽"], answer: 0 }
+  ];
+  B["gyeongbokgung"] = [
+    { q: "근정전의 '근정(勤政)'에 담긴 통치 이념으로 가장 알맞은 것은?", choices: ["부지런히 정사를 돌봄", "무력으로 다스림", "백성과 거리를 둠", "화려함을 추구함"], answer: 0 },
+    { q: "근정전 앞 조정에 품계에 따라 신하의 위치를 표시한 돌은?", choices: ["품계석", "박석", "월대", "답도"], answer: 0 },
+    { q: "경회루가 세워진 인공 연못과 누각이 상징한 것과 거리가 먼 것은?", choices: ["군사 훈련장", "외교 연회", "왕실 행사", "정원 경관"], answer: 0 },
+    { q: "교태전 뒤편에 왕비를 위해 조성한, 굴뚝(아미산)으로 유명한 공간은?", choices: ["아미산 후원", "향원정", "자경전 꽃담", "건청궁"], answer: 0 },
+    { q: "고종이 경복궁 안에 지어 머물렀고 명성황후 시해(을미사변)가 일어난 전각은?", choices: ["건청궁", "강녕전", "사정전", "수정전"], answer: 0 }
+  ];
+
+  D["changdeokgung"] = [
+    { q: "창덕궁이 1997년 등재된 유네스코 목록으로 정확한 것은?", choices: ["세계문화유산", "세계기록유산", "인류무형유산", "세계자연유산"], answer: 0 },
+    { q: "창덕궁처럼 지형을 살려 비정형으로 배치한 궁궐 양식을 부르는 말은?", choices: ["자연 순응형 배치", "좌우대칭 배치", "격자형 배치", "방사형 배치"], answer: 0 },
+    { q: "임진왜란 후 경복궁 대신 오래도록 정궁 역할을 한 궁궐은?", choices: ["창덕궁", "덕수궁", "경희궁", "창경궁"], answer: 0 },
+    { q: "창덕궁과 창경궁을 함께 묶어 부르던 이름은?", choices: ["동궐", "서궐", "남궐", "북궐"], answer: 0 },
+    { q: "정조가 창덕궁 후원에 세워 학문과 정책을 펴던 기구·건물은?", choices: ["규장각(주합루)", "집현전", "홍문관", "성균관"], answer: 0 },
+    { q: "창덕궁 돈화문은 현존하는 궁궐 정문 중 어떤 의미를 갖나요?", choices: ["가장 오래된 궁궐 정문", "가장 큰 정문", "가장 최근의 정문", "유일한 2층 정문"], answer: 0 },
+    { q: "조선 마지막 임금 순종이 창덕궁에서 승하하며 갖는 역사적 의미는?", choices: ["조선 왕조의 사실상 마지막을 상징", "대한제국의 시작", "임진왜란의 끝", "갑오개혁의 시작"], answer: 0 },
+    { q: "창덕궁 후원의 부용지·부용정이 보여주는 조경 원리로 알맞은 것은?", choices: ["천원지방(하늘은 둥글고 땅은 네모)", "황금비율", "좌우대칭", "방사형 분할"], answer: 0 }
+  ];
+  B["changdeokgung"] = [
+    { q: "창덕궁 후원이 일반적 정원과 다른 가장 큰 특징은?", choices: ["자연 지형을 최대한 보존함", "기하학적 화단 중심", "분수 중심", "인공 폭포 중심"], answer: 0 },
+    { q: "인정전 지붕 용마루에 있는, 대한제국 황실을 상징하는 문양은?", choices: ["오얏꽃(이화) 문장", "봉황", "용", "거북"], answer: 0 },
+    { q: "인정전 내부에 근대 문물로 들어온 것으로 알맞은 것은?", choices: ["전등·커튼 등 서양식 설비", "온돌만", "촛대만", "벽화만"], answer: 0 }
+  ];
+
+  D["changgyeonggung"] = [
+    { q: "창경궁의 전신으로, 세종이 상왕 태종을 모시려 지은 궁의 이름은?", choices: ["수강궁", "경운궁", "자수궁", "인경궁"], answer: 0 },
+    { q: "일제가 창경궁을 격하하며 동물원·식물원을 들여 바꿔 부른 이름은?", choices: ["창경원", "창경공원", "이왕원", "동물원"], answer: 0 },
+    { q: "창경궁의 정전 명정전이 다른 궁 정전과 달리 향한 방향은?", choices: ["동향", "남향", "서향", "북향"], answer: 0 },
+    { q: "영조의 아들로 창경궁 문정전 앞에서 비극을 맞은 세자는?", choices: ["사도세자", "소현세자", "효명세자", "양녕대군"], answer: 0 },
+    { q: "창경궁이 본래 모습으로 복원되기 시작한 것은 대략 언제부터인가요?", choices: ["1980년대", "1920년대", "1950년대", "2010년대"], answer: 0 },
+    { q: "성종이 세 대비(정희·소혜·안순왕후)를 위해 창경궁을 지은 사실이 보여주는 것은?", choices: ["왕실 웃어른 봉양(효) 중시", "군사력 강화", "외교 확대", "상업 장려"], answer: 0 },
+    { q: "창경궁에 있었던 천문 관측 기구로, 과학사적 가치가 큰 것은?", choices: ["관천대(간의대)", "측우기 공장", "해시계 공방", "지진계"], answer: 0 },
+    { q: "일제가 창경궁에 동·식물원을 들인 행위의 본질로 알맞은 것은?", choices: ["궁궐의 위상을 의도적으로 격하", "백성 복지 향상", "과학 교육 진흥", "왕실 보호"], answer: 0 },
+    { q: "창경궁 옥천교가 갖는 특징으로 알맞은 것은?", choices: ["서울 궁궐 다리 중 손꼽히는 옛 석교", "유일한 나무다리", "최근에 만든 다리", "외국식 다리"], answer: 0 }
+  ];
+  B["changgyeonggung"] = [
+    { q: "명정전이 '현존 최고(最古) 궁궐 정전'으로 평가받는 근거는?", choices: ["임진왜란 후 재건되어 오래 보존됨", "최근 신축", "콘크리트 구조", "서양식 설계"], answer: 0 }
+  ];
+
+  D["deoksugung"] = [
+    { q: "덕수궁의 옛 이름 '경운궁'이 정궁이 된 직접적 계기는?", choices: ["임진왜란으로 다른 궁이 모두 소실됨", "왕의 취향", "풍수상 길지", "외국의 권유"], answer: 0 },
+    { q: "고종이 아관파천 후 환궁하여 대한제국을 선포한(1897) 궁은?", choices: ["경운궁(덕수궁)", "경복궁", "창덕궁", "경희궁"], answer: 0 },
+    { q: "'덕수궁'이라는 이름이 붙은 시점과 관련 있는 사건은?", choices: ["고종의 강제 퇴위(1907)", "임진왜란", "병자호란", "갑신정변"], answer: 0 },
+    { q: "덕수궁 안 서양식 건물 석조전이 보여주는 시대적 특징은?", choices: ["대한제국기 서구 문물 수용", "조선 초 건축", "고려 양식", "삼국 양식"], answer: 0 },
+    { q: "덕수궁 돌담길과 관련된 근대 외교 공간이 주변에 많았던 까닭은?", choices: ["인근에 외국 공사관이 밀집해서", "시장이 있어서", "군대가 있어서", "절이 많아서"], answer: 0 },
+    { q: "덕수궁 대한문(정문)의 본래 이름은?", choices: ["대안문", "돈화문", "흥화문", "광화문"], answer: 0 }
+  ];
+  B["deoksugung"] = [
+    { q: "석조전을 설계·완공한 시기의 건축 양식으로 알맞은 것은?", choices: ["신고전주의 양식", "고딕 양식", "한옥 양식", "바로크 단독양식"], answer: 0 },
+    { q: "중화전이 원래 2층(중층)에서 단층으로 바뀐 직접적 원인은?", choices: ["1904년 화재", "지진", "전쟁", "홍수"], answer: 0 },
+    { q: "정관헌이 보여주는 건축적 특징으로 알맞은 것은?", choices: ["동서양 양식이 절충됨", "순수 전통 한옥", "순수 고딕", "철골 마천루"], answer: 0 },
+    { q: "석조전이 해방 후 한때 사용된 용도로 역사적 의미가 큰 것은?", choices: ["미소공동위원회 회의 장소", "왕의 침전", "군대 막사", "시장"], answer: 0 }
+  ];
+
+  D["gyeonghuigung"] = [
+    { q: "경희궁이 창덕궁(동궐)과 대비되어 불린 이름은?", choices: ["서궐", "남궐", "북궐", "별궁"], answer: 0 },
+    { q: "경희궁의 처음 이름 '경덕궁'이 '경희궁'으로 바뀐 시기는?", choices: ["영조 때", "태조 때", "세종 때", "고종 때"], answer: 0 },
+    { q: "일제강점기 경희궁이 크게 훼손된 직접적 까닭은?", choices: ["터에 일본인 학교(경성중학교)가 들어섬", "화재", "지진", "전쟁 폭격"], answer: 0 },
+    { q: "경희궁을 짓게 한 조선의 임금은?", choices: ["광해군", "선조", "인조", "숙종"], answer: 0 },
+    { q: "경희궁 정문으로, 옮겨졌다가 복원된 문의 이름은?", choices: ["흥화문", "돈화문", "광화문", "대한문"], answer: 0 },
+    { q: "경희궁이 위치한 지형적 특성으로, '서궐'이라 불린 것과 관련된 것은?", choices: ["도성 서쪽 인왕산 자락에 자리함", "한강 한가운데", "동쪽 평지", "남산 정상"], answer: 0 },
+    { q: "경희궁을 짓게 한 광해군 대의 정치적 분위기로 알맞은 것은?", choices: ["왕권 강화와 궁궐 영건이 활발", "쇄국 일변도", "농민 봉기 진압 전념", "외교 단절"], answer: 0 },
+    { q: "경희궁 터가 광복 이후에도 온전히 복원되지 못한 배경으로 알맞은 것은?", choices: ["일제강점기 훼손과 도심 개발", "지진 피해", "자연 보호구역 지정", "왕실의 반대"], answer: 0 },
+    { q: "조선 후기 경희궁이 가진 위상으로 알맞은 것은?", choices: ["창덕궁과 함께 양대 궁궐로 쓰임", "한 번도 사용 안 됨", "외국 사신 전용", "창고로만 사용"], answer: 0 }
+  ];
+  B["gyeonghuigung"] = [
+    { q: "숭정전이 경희궁에서 가진 위상으로 알맞은 것은?", choices: ["왕이 정사를 보던 정전", "주방", "마구간", "창고"], answer: 0 }
   ];
 })();
 
@@ -5487,15 +5622,29 @@ window.THIEF_IMAGES = {
     var body = modal.querySelector(".modal-body");
     if (!body) return;
     var isPalace = isPalaceItem(current);
-    var qCount = isPalace ? 5 : 3;
-    var passNeed = isPalace ? 3 : 2;
+    var deep = (window.GAME_DIFF === "deep");
+    var qCount, passNeed;
+    if (deep) {
+      qCount = isPalace ? 10 : 5;
+      passNeed = isPalace ? 8 : 4;
+    } else {
+      qCount = isPalace ? 5 : 3;
+      passNeed = isPalace ? 3 : 2;
+    }
+    var pool = fullPool(current, deep);
+    // 심층 문제가 부족하면(아직 안 채워진 항목) 일반 풀로 보완
+    if (deep && pool.length < qCount) {
+      pool = pool.concat(fullPool(current, false));
+    }
+    var qc = Math.min(qCount, pool.length);
+    var pn = Math.min(passNeed, qc);
     body.innerHTML =
       '<div class="thief-stage" id="thief-stage">' +
         '<div class="thief-scene">' +
           '<img class="thief-img" src="' + thiefImg("thief_meet") + '" alt="도굴꾼" />' +
           '<div class="thief-bubble">' +
             '“여긴 내 구역이야! <b>' + esc(current.name) + '</b>은 내가 가져간다…<br>' +
-            '막고 싶으면 내 문제 <b>' + qCount + '개 중 ' + passNeed + '개</b>를 맞혀 봐!”' +
+            (deep ? '<b>[심층]</b> ' : '') + '막고 싶으면 내 문제 <b>' + qc + '개 중 ' + pn + '개</b>를 맞혀 봐!”' +
           '</div>' +
         '</div>' +
         '<div class="thief-actions">' +
@@ -5503,8 +5652,8 @@ window.THIEF_IMAGES = {
         '</div>' +
       '</div>';
     document.getElementById("quiz-start").onclick = function () {
-      quizState = { idx: 0, correct: 0, results: [], pass: passNeed,
-                    quiz: buildQuizSet(fullPool(current), qCount) };
+      quizState = { idx: 0, correct: 0, results: [], pass: pn,
+                    quiz: buildQuizSet(pool, qc) };
       renderQuestion();
     };
   }
@@ -5514,8 +5663,15 @@ window.THIEF_IMAGES = {
     return item && (item.category === "궁궐" || (window.QUIZ_BUILDINGS && window.QUIZ_BUILDINGS[item.id]));
   }
 
-  // 기존 quiz + QUIZ_EXTRA[id] (+궁궐이면 시설 문제) 합친 전체 문제 풀
-  function fullPool(item) {
+  // 문제 풀 구성. deep=true면 심층 풀(QUIZ_DEEP), 아니면 일반(quiz+extra+시설)
+  function fullPool(item, deep) {
+    if (deep) {
+      var dpool = (window.QUIZ_DEEP && window.QUIZ_DEEP[item.id]) ? window.QUIZ_DEEP[item.id].slice() : [];
+      if (window.QUIZ_DEEP_BUILDINGS && window.QUIZ_DEEP_BUILDINGS[item.id]) {
+        dpool = dpool.concat(window.QUIZ_DEEP_BUILDINGS[item.id]);
+      }
+      return dpool;
+    }
     var base = (item.quiz || []).slice();
     var extra = (window.QUIZ_EXTRA && window.QUIZ_EXTRA[item.id]) || [];
     var pool = base.concat(extra);
@@ -5985,6 +6141,7 @@ window.THIEF_IMAGES = {
   function $(id) { return document.getElementById(id); }
 
   window.GAME_MODE = null;
+  window.GAME_DIFF = "normal"; // "normal" | "deep"
 
   var RANK_UNLOCK = 31; // 이 개수 이상 사수해야 랭킹전 입장 가능
 
@@ -6012,9 +6169,12 @@ window.THIEF_IMAGES = {
       window.PlayTime.countTime = isRank;
     }
 
-    // 인트로 표시
-    var intro = $("intro-overlay");
-    if (intro) intro.classList.remove("hidden");
+    // 인트로 표시(최초 선택 때만. 게임 중 재선택이면 스킵)
+    if (!window._modeChosenOnce) {
+      var intro = $("intro-overlay");
+      if (intro) intro.classList.remove("hidden");
+      window._modeChosenOnce = true;
+    }
   }
 
   // 현재까지 사수한 개수(현재 상태 우선, 없으면 로그인 기록)
@@ -6058,7 +6218,26 @@ window.THIEF_IMAGES = {
       var ov = $("mode-overlay");
       if (ov) ov.classList.remove("hidden");
       if (window.applyRankLock) window.applyRankLock();
+      // 이미 모드를 고른 상태면 '돌아가기' 노출
+      var back = $("mode-back");
+      if (back) back.classList.toggle("hidden", !window.GAME_MODE);
     };
+    // 돌아가기: 모드 화면만 닫고 게임 복귀(인트로 안 거침)
+    var back = $("mode-back");
+    if (back) back.onclick = function () {
+      var ov = $("mode-overlay");
+      if (ov) ov.classList.add("hidden");
+    };
+
+    // 난이도 선택(일반/심층)
+    var dn = $("diff-normal"), dd = $("diff-deep");
+    function setDiff(diff) {
+      window.GAME_DIFF = diff;
+      if (dn) dn.classList.toggle("active", diff === "normal");
+      if (dd) dd.classList.toggle("active", diff === "deep");
+    }
+    if (dn) dn.onclick = function () { setDiff("normal"); };
+    if (dd) dd.onclick = function () { setDiff("deep"); };
   }
   document.addEventListener("DOMContentLoaded", init);
   if (document.readyState !== "loading") init();
