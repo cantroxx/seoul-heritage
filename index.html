@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ba24a49e2e00f2a390b41f4c734d9f30&libraries=services&autoload=false"></script>
 
@@ -73,15 +74,14 @@
       <div class="admin-title">⚙️ 관리자 메뉴</div>
       <button class="admin-close" id="admin-close" aria-label="닫기">×</button>
     </div>
-    <div class="admin-warn">데이터 삭제는 보안상 <b>Firebase 콘솔</b>에서만 가능해요.<br>
+    <div class="admin-warn">데이터 삭제는 Firebase Auth 관리자 로그인과 Database Rules로 보호해야 합니다.<br>
       <a href="https://console.firebase.google.com/project/seoul-heritage-9187f/database" target="_blank" rel="noopener" style="color:#B5302E;text-decoration:underline">Firebase 콘솔 열기 →</a></div>
     <div class="admin-actions">
-      <div style="font-size:13px;color:#6B5B43;padding:8px 0;line-height:1.7">
-        콘솔에서 Realtime Database → 데이터 탭에서:<br>
-        · <b>users</b> 노드 → 학생 기록 삭제<br>
-        · <b>rankings</b> 노드 → 랭킹 초기화<br>
-        · 개별 학생 키를 눌러 그 학생만 삭제도 가능
-      </div>
+      <button class="admin-btn" id="admin-login">Google 관리자 로그인</button>
+      <button class="admin-btn" id="admin-logout" style="display:none">관리자 로그아웃</button>
+      <button class="admin-btn danger" id="admin-clear-week" disabled>이번 주 랭킹 초기화</button>
+      <button class="admin-btn danger" id="admin-clear-rank" disabled>전체 랭킹 삭제</button>
+      <button class="admin-btn danger" id="admin-clear-users" disabled>전체 학생 기록 삭제</button>
     </div>
     <div id="admin-msg" class="admin-msg"></div>
   </div>
@@ -135,6 +135,7 @@
       <div class="login-label">우리 학교를 찾아보세요</div>
       <input type="text" id="school-search" class="login-input" placeholder="학교 이름 입력 (예: 양진)" autocomplete="off">
       <div id="school-results" class="school-results"></div>
+      <button class="guest-start" id="guest-enter">비회원으로 둘러보기</button>
     </div>
 
     <!-- 2단계: 학교 확인 -->
@@ -188,7 +189,7 @@
     한 구의 문화재를 모두 지키면 그 구가 황금빛으로 빛나요. ✨
   </div>
   <button class="start" id="intro-start">탐험 시작! ▶</button>
-  <div class="credit">자료 출처: 국가유산청·국가유산포털 및 각 기관 공식 누리집</div>
+  <div class="credit">자료 출처: 국가유산청·국가유산포털 및 각 기관 공식 누리집 · <a href="NOTICE.md" target="_blank" rel="noopener noreferrer">출처/라이선스</a></div>
 </div>
 
 <!-- 문화유산 도감 버튼(서울 전체 화면 우측 하단) -->
@@ -242,6 +243,8 @@
 <script src="data/schools.js"></script>
 <script src="data/quiz_extra.js"></script>
 <script src="data/quiz_deep.js"></script>
+<script src="data/admin_config.js"></script>
+<script src="data/asset_credits.js"></script>
 <script src="data/thief_images.js"></script>
 <script src="data/heritage_palaces.js"></script>
 <script src="data/heritage_walls_tombs.js"></script>

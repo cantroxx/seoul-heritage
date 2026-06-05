@@ -41,6 +41,8 @@
     $("login-nick").addEventListener("keydown", function (e) {
       if (e.key === "Enter") tryEnter();
     });
+    var guest = $("guest-enter");
+    if (guest) guest.onclick = enterGuest;
   }
 
   function renderResults(q) {
@@ -153,9 +155,14 @@
 
   function finishLogin(user) {
     window.CURRENT_USER = user;
+    if (user && user.guest && window.GameState && window.GameState.setMemoryOnly) {
+      window.GameState.setMemoryOnly(true);
+    } else if (window.GameState && window.GameState.setMemoryOnly) {
+      window.GameState.setMemoryOnly(false);
+    }
 
     // 기존 기록이 있으면 난이도별 사수 상태 복원
-    if (user.record && window.GameState && window.GameState.restoreSaved) {
+    if (!user.guest && user.record && window.GameState && window.GameState.restoreSaved) {
       window.GameState.restoreSaved(user.record.saved, user.record.savedDeep);
     }
 
@@ -171,7 +178,19 @@
     if (window.onLoginDone) window.onLoginDone(user);
   }
 
+  function enterGuest() {
+    finishLogin({
+      guest: true,
+      school: null,
+      number: null,
+      nick: "비회원",
+      district: null,
+      address: null,
+      record: null,
+      isNew: true
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", init);
   if (document.readyState !== "loading") init();
 })();
-

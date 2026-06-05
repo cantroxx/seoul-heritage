@@ -27,6 +27,10 @@
   }
 
   function open() {
+    if (window.CURRENT_USER && window.CURRENT_USER.guest) {
+      alert("비회원은 랭킹전에 참여할 수 없어요.\n학습 모드에서 문화유산을 둘러볼 수 있습니다.");
+      return;
+    }
     var overlay = $("ranking-overlay");
     overlay.classList.add("show");
     var body = $("ranking-body");
@@ -107,4 +111,3 @@
   document.addEventListener("DOMContentLoaded", init);
   if (document.readyState !== "loading") init();
 })();
-

@@ -105,6 +105,7 @@
   /* ---------- Firebase 저장 ---------- */
   function saveToFB(force) {
     var u = window.CURRENT_USER;
+    if (u && u.guest) return;
     if (!u || !window.FB || !window.FB.ready) return;
     var now = Date.now();
     if (!force && now - PT.lastSaveMs < SAVE_EVERY_MS) return;
@@ -142,6 +143,7 @@
   PT.submitToRanking = function () {
     if (window.GAME_MODE !== "rank") return;          // 학습 모드는 랭킹 제출 안 함
     var u = window.CURRENT_USER;
+    if (u && u.guest) return;
     if (!u || !window.FB || !window.FB.ready) return;
     var GS = window.GameState;
     var t = GS.totals();                              // 현재 난이도 기준
@@ -172,4 +174,3 @@
     startFromUser(user);
   };
 })();
-

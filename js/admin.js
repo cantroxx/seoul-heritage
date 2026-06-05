@@ -53,19 +53,46 @@
         setMsg(err ? ("오류: " + err) : "전체 학생 기록을 삭제했어요.", err ? "warn" : "ok");
       });
     };
+    var login = $("admin-login");
+    if (login) login.onclick = function () {
+      setMsg("관리자 로그인 중...");
+      window.FB.signInAdmin(function (err) {
+        setMsg(err ? ("오류: " + err) : "관리자로 로그인했습니다.", err ? "warn" : "ok");
+        refreshAdminAuth();
+      });
+    };
+    var logout = $("admin-logout");
+    if (logout) logout.onclick = function () {
+      window.FB.signOutAdmin(function (err) {
+        setMsg(err ? ("오류: " + err) : "로그아웃했습니다.", err ? "warn" : "ok");
+        refreshAdminAuth();
+      });
+    };
+    refreshAdminAuth();
+  }
+
+  function refreshAdminAuth() {
+    var isAdmin = !!(window.FB && window.FB.isAdmin && window.FB.isAdmin());
+    var login = $("admin-login"), logout = $("admin-logout");
+    var wk = $("admin-clear-week"), ar = $("admin-clear-rank"), au = $("admin-clear-users");
+    if (login) login.style.display = isAdmin ? "none" : "";
+    if (logout) logout.style.display = isAdmin ? "" : "none";
+    [wk, ar, au].forEach(function (b) { if (b) b.disabled = !isAdmin; });
+    if (!isAdmin && window.FB && window.FB.authUser) {
+      setMsg("이 Google 계정은 관리자 UID 목록에 없습니다.", "warn");
+    }
   }
 
   // 로그인 완료 시 관리자면 버튼 노출(기존 onLoginDone 체이닝)
   var prev = window.onLoginDone;
   window.onLoginDone = function (user) {
     if (typeof prev === "function") prev(user);
-    if (window.FB && window.FB.isAdmin && window.FB.isAdmin(user)) {
-      var b = $("admin-btn");
-      if (b) b.style.display = "";
-    }
+    var b = $("admin-btn");
+    if (b) b.style.display = "";
+    refreshAdminAuth();
   };
+  window.onAdminAuthChanged = refreshAdminAuth;
 
   document.addEventListener("DOMContentLoaded", init);
   if (document.readyState !== "loading") init();
 })();
-

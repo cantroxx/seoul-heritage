@@ -21,6 +21,7 @@
   var savedDeep   = loadSet(KEY_D);
   var diff = "normal";                 // 현재 활성 난이도
   var listeners = [];
+  var memoryOnly = false;
 
   function activeSet() { return diff === "deep" ? savedDeep : savedNormal; }
   function activeKey() { return diff === "deep" ? KEY_D : KEY_N; }
@@ -33,6 +34,7 @@
     } catch (e) { return new Set(); }
   }
   function persist() {
+    if (memoryOnly) return;
     try { window.localStorage.setItem(activeKey(), JSON.stringify(Array.from(activeSet()))); }
     catch (e) { /* 메모리 모드 */ }
   }
@@ -47,6 +49,14 @@
       emit();
     },
     getDifficulty: function () { return diff; },
+    setMemoryOnly: function (on) {
+      memoryOnly = !!on;
+      if (memoryOnly) {
+        savedNormal.clear();
+        savedDeep.clear();
+        emit();
+      }
+    },
 
     isSaved: function (id) { return activeSet().has(id); },
 
@@ -59,6 +69,7 @@
 
     // Firebase 기록 복원: 난이도별로 각각 복원
     restoreSaved: function (normalObj, deepObj) {
+      if (memoryOnly) return;
       function fill(set, obj) {
         set.clear();
         if (!obj) return;
@@ -120,4 +131,3 @@
 
   window.GameState = GameState;
 })();
-

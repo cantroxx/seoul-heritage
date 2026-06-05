@@ -2,7 +2,7 @@
 /* =========================================================================
  *  firebase_init.js  —  Firebase 연결 초기화 + 데이터 접근 헬퍼
  *  - compat SDK(전역 firebase)를 CDN으로 로드한 뒤 이 파일이 실행됨.
- *  - Realtime Database 사용.
+ *  - Firebase Auth + Realtime Database 사용.
  *  전역: window.FB = { ready, db, ... 헬퍼 }
  * ========================================================================= */
 (function () {
@@ -20,7 +20,10 @@
 
   var FB = {
     ready: false,
+    authReady: false,
+    auth: null,
     db: null,
+    authUser: null,
     error: null
   };
   window.FB = FB;
@@ -34,8 +37,10 @@
     }
     try {
       firebase.initializeApp(firebaseConfig);
+      FB.auth = firebase.auth ? firebase.auth() : null;
       FB.db = firebase.database();
       FB.ready = true;
+      initAuth();
       console.log("Firebase 연결됨");
     } catch (e) {
       FB.error = String(e);
@@ -43,6 +48,22 @@
     }
   }
   tryInit();
+
+  function adminUids() {
+    return (window.ADMIN_CONFIG && window.ADMIN_CONFIG.adminUids || [])
+      .filter(function (uid) { return uid && uid.indexOf("REPLACE_") !== 0; });
+  }
+
+  function initAuth() {
+    if (!FB.auth) return;
+    FB.auth.onAuthStateChanged(function (user) {
+      FB.authUser = user || null;
+      FB.authReady = true;
+      if (typeof window.onAdminAuthChanged === "function") {
+        window.onAdminAuthChanged(FB.authUser);
+      }
+    });
+  }
 
   /* ---------- 키 정규화: 번호/닉네임/학교를 안전한 키로 ---------- */
   // Firebase 키에 쓸 수 없는 문자(. # $ [ ] /)와 공백 제거
@@ -76,14 +97,35 @@
   };
 
   /* ---------- 관리자 기능 ---------- */
-  // 관리자 계정 판별(이 계정만 관리자 UI 노출 — 클라이언트 측 제어)
-  FB.isAdmin = function (user) {
-    return user && user.school === "서울동자초등학교" && String(user.number) === "22" && user.nick === "kdw";
+  // 관리자 계정 판별. 실제 삭제 권한은 Realtime Database Rules의 auth.uid 조건이 최종 보호선이다.
+  FB.isAdmin = function () {
+    return !!(FB.authUser && adminUids().indexOf(FB.authUser.uid) !== -1);
+  };
+
+  FB.signInAdmin = function (cb) {
+    if (!FB.auth || !firebase.auth.GoogleAuthProvider) { if (cb) cb("Firebase Auth 로드 실패"); return; }
+    var provider = new firebase.auth.GoogleAuthProvider();
+    FB.auth.signInWithPopup(provider)
+      .then(function () { if (cb) cb(null); })
+      .catch(function (e) { if (cb) cb(String(e.message || e)); });
+  };
+
+  FB.signOutAdmin = function (cb) {
+    if (!FB.auth) { if (cb) cb("Firebase Auth 로드 실패"); return; }
+    FB.auth.signOut()
+      .then(function () { if (cb) cb(null); })
+      .catch(function (e) { if (cb) cb(String(e.message || e)); });
+  };
+
+  function requireAdmin(cb) {
+    if (!FB.ready) { if (cb) cb("DB 미연결"); return false; }
+    if (!FB.isAdmin()) { if (cb) cb("관리자 로그인이 필요합니다."); return false; }
+    return true;
   };
 
   // 전체 학생 기록(users) 삭제
   FB.adminClearAllUsers = function (cb) {
-    if (!FB.ready) { if (cb) cb("DB 미연결"); return; }
+    if (!requireAdmin(cb)) return;
     FB.db.ref("users").remove()
       .then(function () { if (cb) cb(null); })
       .catch(function (e) { if (cb) cb(String(e)); });
@@ -91,7 +133,7 @@
 
   // 전체 랭킹(모든 주차) 삭제
   FB.adminClearAllRankings = function (cb) {
-    if (!FB.ready) { if (cb) cb("DB 미연결"); return; }
+    if (!requireAdmin(cb)) return;
     FB.db.ref("rankings").remove()
       .then(function () { if (cb) cb(null); })
       .catch(function (e) { if (cb) cb(String(e)); });
@@ -99,7 +141,7 @@
 
   // 이번 주 랭킹만 초기화(난이도 양쪽 모두)
   FB.adminClearThisWeekRanking = function (cb) {
-    if (!FB.ready) { if (cb) cb("DB 미연결"); return; }
+    if (!requireAdmin(cb)) return;
     FB.db.ref("rankings/" + FB.weekKey()).remove()
       .then(function () { if (cb) cb(null); })
       .catch(function (e) { if (cb) cb(String(e)); });
@@ -182,4 +224,3 @@
     FB.saveUser(school, number, nick, rec, function (err) { cb(rec, err); });
   };
 })();
-

@@ -83,7 +83,17 @@
     window.Photos.resolve(item).then(function (url) {
       if (!url) { box.innerHTML = '<div class="ph-fb">🏛️</div>'; return; }
       var im = new Image();
-      im.onload = function () { box.innerHTML = ""; box.appendChild(im); };
+      im.onload = function () {
+        box.innerHTML = "";
+        box.appendChild(im);
+        var credit = window.Photos.credit && window.Photos.credit(url);
+        if (credit) {
+          var c = document.createElement("div");
+          c.className = "card-credit";
+          c.textContent = credit.shortLabel || credit.label || "Wikimedia Commons";
+          box.appendChild(c);
+        }
+      };
       im.onerror = function () { box.innerHTML = '<div class="ph-fb">🏛️</div>'; };
       im.alt = b.name; im.src = url;
     }).catch(function () { box.innerHTML = '<div class="ph-fb">🏛️</div>'; });
@@ -125,4 +135,3 @@
 
   window.PalaceView = { open: SM.openPalace, close: closePalace };
 })();
-

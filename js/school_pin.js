@@ -25,6 +25,7 @@
 
   // 로그인 완료 시 호출됨
   window.onLoginDone = function (user) {
+    if (user && user.guest) return;
     if (!user || !user.address) return;
     SP.name = user.school;
     geocodeWhenReady(user.address, 12, function (coord, err) {
@@ -77,4 +78,3 @@
     return { km: km, kmText: est.kmText, walkMin: est.walkMin, carMin: est.carMin, dir: dir };
   };
 })();
-

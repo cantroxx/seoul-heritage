@@ -21,6 +21,10 @@
       window.GameState.setDifficulty(window.GAME_DIFF);
     }
     // 랭킹전 잠금 확인
+    if (mode === "rank" && isGuest()) {
+      alert("비회원은 랭킹전에 참여할 수 없어요.\n학습 모드로 문화유산을 둘러볼 수 있습니다.");
+      return;
+    }
     if (mode === "rank" && !rankUnlocked()) {
       var savedN = currentSavedCount();
       alert("랭킹전은 문화유산을 " + RANK_UNLOCK + "개 이상 사수한 뒤에 열려요!\n지금까지 " + savedN + "개 사수했어요.\n먼저 학습 모드에서 더 공부해 볼까요?");
@@ -62,12 +66,17 @@
     return 0;
   }
   function rankUnlocked() { return currentSavedCount() >= RANK_UNLOCK; }
+  function isGuest() { return !!(window.CURRENT_USER && window.CURRENT_USER.guest); }
 
   // 모드 화면 표시 시 랭킹전 버튼 잠금 모양 반영
   function applyLock() {
     var r = $("mode-rank");
     if (!r) return;
-    if (rankUnlocked()) {
+    if (isGuest()) {
+      r.classList.add("locked");
+      var guestDesc = r.querySelector(".mode-opt-desc");
+      if (guestDesc) guestDesc.innerHTML = "비회원은 랭킹전에 참여할 수 없어요<br>학습 모드만 사용할 수 있어요";
+    } else if (rankUnlocked()) {
       r.classList.remove("locked");
       var d = r.querySelector(".mode-opt-desc");
       if (d) d.innerHTML = "시간을 재서 빠르게!<br>전국 친구들과 순위 대결";
@@ -116,4 +125,3 @@
   document.addEventListener("DOMContentLoaded", init);
   if (document.readyState !== "loading") init();
 })();
-

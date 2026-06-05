@@ -291,6 +291,14 @@ body.district-mode #district-title { display: block; }
   position: relative;
 }
 .modal-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.modal-photo .photo-credit {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: rgba(46,32,23,.78); color: #fff;
+  font-family: "Gowun Dodum", sans-serif; font-size: 11px;
+  line-height: 1.35; padding: 6px 10px;
+}
+.modal-photo .photo-credit.needs-review { background: rgba(181,48,46,.86); }
+.modal-photo .photo-credit a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
 .modal-photo .photo-fallback {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   color: var(--ink-soft); font-size: 13px; text-align: center; padding: 16px;
@@ -539,6 +547,12 @@ body.district-mode #district-title { display: block; }
   display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
 }
 .bld-card .card-photo img { width: 100%; height: 100%; object-fit: cover; }
+.bld-card .card-photo .card-credit {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: rgba(46,32,23,.72); color: #fff;
+  font-family: "Gowun Dodum", sans-serif; font-size: 10px;
+  line-height: 1.25; padding: 4px 7px;
+}
 .bld-card .card-photo .ph-load { color: var(--ink-soft); font-size: 13px; font-family: "Gowun Dodum",sans-serif; }
 .bld-card .card-photo .ph-fb { color: var(--ink-soft); font-size: 30px; }
 .bld-card .card-body { padding: 14px 16px; }
@@ -825,6 +839,12 @@ body.district-mode #district-title { display: block; }
 }
 .login-card .start:hover { transform: scale(1.03); }
 .login-card .start:disabled { opacity: .6; cursor: default; transform: none; }
+.guest-start {
+  width: 100%; margin-top: 14px; background: rgba(255,255,255,.14); color: #F3E9D8;
+  border: 1.5px solid rgba(255,255,255,.34); border-radius: 999px;
+  padding: 12px 14px; font-family: "Jua", sans-serif; font-size: 15px; cursor: pointer;
+}
+.guest-start:hover { background: rgba(255,255,255,.22); }
 .login-back {
   background: none; border: none; color: #C8B89F; font-size: 13px;
   margin-top: 12px; cursor: pointer; font-family: "Gowun Dodum", sans-serif;
@@ -1053,6 +1073,8 @@ body.district-mode #codex-btn { display: none; }  /* 구 진입 시 숨김 */
 .admin-btn:hover { background: #FFE8E8; }
 .admin-btn.danger { background: #B5302E; color: #fff; border-color: #B5302E; }
 .admin-btn.danger:hover { background: #9A2624; }
+.admin-btn:disabled { opacity: .45; cursor: not-allowed; }
+.admin-btn:disabled:hover { background: #FFF5F5; }
 .admin-msg { padding: 0 20px 18px; font-size: 13px; min-height: 18px; }
 .admin-msg.ok { color: #2E7D32; }
 .admin-msg.warn { color: #B5302E; }
@@ -1089,4 +1111,3 @@ body.district-mode #codex-btn { display: none; }  /* 구 진입 시 숨김 */
   padding: 10px 12px; margin: 4px 0 8px;
 }
 .login-rules b { color: var(--accent-deep, #E07A00); }
-

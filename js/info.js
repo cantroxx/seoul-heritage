@@ -125,6 +125,33 @@
     var loading = document.getElementById("photo-loading");
     var fb = document.getElementById("photo-fallback");
     function showFallback() { if (loading) loading.style.display = "none"; if (fb) fb.style.display = "flex"; }
+    function showCredit(url) {
+      if (!box || !(window.Photos && window.Photos.credit)) return;
+      var credit = window.Photos.credit(url);
+      if (!credit) return;
+      var el = document.createElement("div");
+      el.className = "photo-credit" + (credit.verified === false ? " needs-review" : "");
+      el.appendChild(document.createTextNode(credit.label || "이미지 출처 확인 필요"));
+      if (credit.sourceUrl) {
+        el.appendChild(document.createTextNode(" · "));
+        var src = document.createElement("a");
+        src.href = credit.sourceUrl;
+        src.target = "_blank";
+        src.rel = "noopener noreferrer";
+        src.textContent = "원본";
+        el.appendChild(src);
+      }
+      if (credit.licenseUrl) {
+        el.appendChild(document.createTextNode(" · "));
+        var lic = document.createElement("a");
+        lic.href = credit.licenseUrl;
+        lic.target = "_blank";
+        lic.rel = "noopener noreferrer";
+        lic.textContent = "라이선스";
+        el.appendChild(lic);
+      }
+      box.appendChild(el);
+    }
 
     var resolver = (window.Photos && window.Photos.resolve)
       ? window.Photos.resolve(item)
@@ -137,6 +164,7 @@
         if (loading) loading.style.display = "none";
         im.className = "photo-img";
         if (box) box.insertBefore(im, box.firstChild);
+        showCredit(url);
       };
       im.onerror = showFallback;
       im.alt = item.name;
@@ -204,6 +232,11 @@
 
   /* ---------------- 사수 퀴즈 (도굴꾼 연출) ---------------- */
   function thiefImg(tag) {
+    if (window.ASSET_CREDITS &&
+        window.ASSET_CREDITS.generatedCharacters &&
+        window.ASSET_CREDITS.generatedCharacters.verified === false) {
+      return "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20240%20240'%3E%3Crect%20width='240'%20height='240'%20rx='28'%20fill='%23f5ead7'/%3E%3Ccircle%20cx='120'%20cy='92'%20r='42'%20fill='%238a6a44'/%3E%3Cpath%20d='M58%20198c10-42%2048-64%2082-55%2028%207%2048%2027%2052%2055z'%20fill='%23b5302e'/%3E%3Cpath%20d='M74%2078c24-34%2072-39%20102-6-42-10-76-8-102%206z'%20fill='%232e2017'/%3E%3Ccircle%20cx='104'%20cy='94'%20r='6'%20fill='%232e2017'/%3E%3Ccircle%20cx='138'%20cy='94'%20r='6'%20fill='%232e2017'/%3E%3Cpath%20d='M104%20122c13%208%2028%208%2041%200'%20fill='none'%20stroke='%232e2017'%20stroke-width='7'%20stroke-linecap='round'/%3E%3Ctext%20x='120'%20y='222'%20text-anchor='middle'%20font-size='18'%20font-family='sans-serif'%20fill='%236b5b43'%3Eimage%20pending%3C/text%3E%3C/svg%3E";
+    }
     var src = (window.THIEF_IMAGES && window.THIEF_IMAGES[tag]) || "";
     return src;
   }
@@ -420,4 +453,3 @@
     document.getElementById("modal-close").onclick = close;
   };
 })();
-

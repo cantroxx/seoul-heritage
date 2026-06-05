@@ -1,0 +1,55 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "users": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'UImd3BfRRqdiwA2e990MvgvpBeB2'",
+      "$userKey": {
+        ".read": true,
+        ".write": "newData.exists()",
+        ".validate": "newData.hasChildren(['school', 'number', 'nick', 'createdAt', 'lastSeen'])",
+        "school": { ".validate": "newData.isString()" },
+        "number": { ".validate": "newData.isString() || newData.isNumber()" },
+        "nick": { ".validate": "newData.isString()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "lastSeen": { ".validate": "newData.isNumber()" },
+        "saved": {
+          "$itemId": { ".validate": "newData.val() === true" }
+        },
+        "savedDeep": {
+          "$itemId": { ".validate": "newData.val() === true" }
+        },
+        "savedCount": { ".validate": "newData.isNumber()" },
+        "savedCountDeep": { ".validate": "newData.isNumber()" },
+        "playMs": { ".validate": "newData.isNumber()" },
+        "finishedMs": { ".validate": "newData.isNumber() || newData.val() === null" },
+        "finishedMsDeep": { ".validate": "newData.isNumber() || newData.val() === null" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "rankings": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === 'UImd3BfRRqdiwA2e990MvgvpBeB2'",
+      "$week": {
+        ".write": "auth != null && auth.uid === 'UImd3BfRRqdiwA2e990MvgvpBeB2'",
+        "$diff": {
+          "$userKey": {
+            ".write": "newData.exists()",
+            ".validate": "newData.hasChildren(['nick', 'school', 'number', 'savedCount', 'timeMs', 'cleared', 'at'])",
+            "nick": { ".validate": "newData.isString()" },
+            "school": { ".validate": "newData.isString()" },
+            "number": { ".validate": "newData.isString() || newData.isNumber()" },
+            "savedCount": { ".validate": "newData.isNumber()" },
+            "timeMs": { ".validate": "newData.isNumber()" },
+            "cleared": { ".validate": "newData.isBoolean()" },
+            "at": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": false }
+          }
+        }
+      }
+    }
+  }
+}
